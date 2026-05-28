@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XSKULLX</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #111217;
+      --panel: #1b1d26;
+      --panel-2: #242735;
+      --text: #f7f8ff;
+      --muted: #aeb4c8;
+      --line: #343849;
+      --accent: #47d6a8;
+      --accent-2: #75a7ff;
+      --danger: #ff6b7a;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(17, 18, 23, 0.94);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 150px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--accent);
+    }
+
+    .tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-button,
+    .primary-button,
+    .secondary-button {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--text);
+      background: var(--panel);
+      min-height: 40px;
+      padding: 0 14px;
+    }
+
+    .tab-button[aria-selected="true"] {
+      border-color: var(--accent);
+      background: #17352d;
+      color: #dffdf3;
+    }
+
+    .primary-button {
+      border-color: #2f7d66;
+      background: var(--accent);
+      color: #07120f;
+      font-weight: 700;
+    }
+
+    .secondary-button:hover,
+    .tab-button:hover {
+      border-color: #596078;
+    }
+
+    .content {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      padding: 26px 20px 40px;
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    .page-heading {
+      margin-bottom: 22px;
+    }
+
+    .page-heading h1,
+    .page-heading h2 {
+      margin: 0 0 8px;
+      letter-spacing: 0;
+    }
+
+    .page-heading p {
+      max-width: 680px;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .game-card,
+    .setting-row,
+    .launcher-panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .game-card {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+      min-height: 160px;
+    }
+
+    .game-card h3 {
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    .game-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .game-icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: var(--panel-2);
+      color: var(--accent-2);
+      font-weight: 800;
+    }
+
+    .game-page {
+      position: fixed;
+      inset: 0;
+      z-index: 8;
+      grid-template-rows: auto 1fr;
+      width: 100%;
+      background: var(--bg);
+    }
+
+    .game-page.active {
+      display: grid;
+    }
+
+    .game-page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 58px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel);
+    }
+
+    .game-page-left,
+    .game-page-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .icon-button {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-2);
+      color: var(--text);
+      font-size: 1.15rem;
+      line-height: 1;
+    }
+
+    .game-page-title {
+      min-width: 0;
+      display: grid;
+      gap: 2px;
+    }
+
+    .game-page-title strong,
+    .game-page-title span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .game-page-title span {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .game-frame {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #08090d;
+    }
+
+    .frame-area {
+      position: relative;
+      min-height: 0;
+    }
+
+    .frame-notice {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: none;
+      place-items: center;
+      padding: 24px;
+      background: #111217;
+      text-align: center;
+    }
+
+    .frame-notice.active {
+      display: grid;
+    }
+
+    .frame-notice-inner {
+      display: grid;
+      gap: 12px;
+      width: min(520px, 100%);
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .frame-notice-inner h2,
+    .frame-notice-inner p {
+      margin: 0;
+    }
+
+    .frame-notice-inner p {
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .setting-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .setting-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+    }
+
+    .setting-row h3 {
+      margin: 0 0 5px;
+      font-size: 1rem;
+      letter-spacing: 0;
+    }
+
+    .setting-row p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .setting-row input,
+    .setting-row select {
+      min-height: 40px;
+      width: 160px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-2);
+      color: var(--text);
+      padding: 0 10px;
+    }
+
+    .launcher-panel {
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+    }
+
+    .launcher-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .shortcut-bar {
+      position: fixed;
+      left: 16px;
+      bottom: 16px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: #d6d6e7;
+      font-size: 0.9rem;
+      z-index: 6;
+    }
+
+    kbd {
+      border: 1px solid #515163;
+      border-bottom-width: 3px;
+      border-radius: 6px;
+      padding: 2px 7px;
+      background: #20202a;
+      color: #fff;
+      font: inherit;
+    }
+
+    .classroom-cover {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      min-height: 100vh;
+      background: #f8f9fa;
+      color: #202124;
+      font-family: Arial, sans-serif;
+    }
+
+    .classroom-cover[hidden] {
+      display: none;
+    }
+
+    .classroom-topbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      background: #1a73e8;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .classroom-logo {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: #fff;
+      color: #1a73e8;
+      font-weight: 700;
+    }
+
+    .classroom-content {
+      padding: 30px;
+    }
+
+    .classroom-content h2 {
+      margin: 0;
+      color: #202124;
+      font-weight: 500;
+    }
+
+    .class-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 300px));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .class-card {
+      width: 100%;
+      padding: 20px;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .class-title {
+      color: #202124;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .class-status {
+      margin-top: 5px;
+      color: #5f6368;
+    }
+
+    @media (max-width: 720px) {
+      .topbar,
+      .setting-row {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+      }
+
+      .topbar {
+        display: grid;
+      }
+
+      .tabs {
+        width: 100%;
+      }
+
+      .setting-row input,
+      .setting-row select {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">X</span>
+        <span>XSKULLX</span>
+      </div>
+
+      <nav class="tabs" aria-label="Main tabs">
+        <button class="tab-button" type="button" data-tab="home" aria-selected="true">Home</button>
+        <button class="tab-button" type="button" data-tab="games" aria-selected="false">Games</button>
+        <button class="tab-button" type="button" data-tab="apps" aria-selected="false">Apps</button>
+        <button class="tab-button" type="button" data-tab="settings" aria-selected="false">Settings</button>
+        <button class="tab-button" type="button" data-tab="deploy" aria-selected="false">About Blank</button>
+      </nav>
+
+      <button class="primary-button" type="button" id="quickLaunchButton">Launch</button>
+    </header>
+
+    <main class="content">
+      <section class="view active" id="home" data-view>
+        <div class="page-heading">
+          <h1>XSKULLX Hub</h1>
+          <p>A compact launcher with games, settings, a classroom cover shortcut, and an about:blank deployment button.</p>
+        </div>
+
+        <div class="launcher-panel">
+          <strong>Ready to launch</strong>
+          <span>Use the tabs above to move around, press backtick for the cover view, or open this page inside about:blank.</span>
+          <div class="launcher-actions">
+            <button class="primary-button" type="button" data-open-tab="games">Browse Games</button>
+            <button class="secondary-button" type="button" data-open-tab="deploy">Open Launcher</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="games" data-view>
+        <div class="page-heading">
+          <h2>Games</h2>
+          <p>Choose a game and it opens on its own full-page iframe view.</p>
+        </div>
+
+        <div class="game-grid">
+          <article class="game-card">
+            <span class="game-icon">1</span>
+            <h3>Kartbros</h3>
+            <p>Open kartbros.io in the full-page game view.</p>
+            <button class="secondary-button" type="button" data-game-title="Kartbros" data-game-url="https://kartbros.io">Kartbros</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">2</span>
+            <h3>EvoWorld</h3>
+            <p>Open evoworld.io in the full-page game view.</p>
+            <button class="secondary-button" type="button" data-game-title="EvoWorld" data-game-url="https://evoworld.io">EvoWorld</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">3</span>
+            <h3>Level Devil</h3>
+            <p>Open leveldevil-game.io in the full-page game view.</p>
+            <button class="secondary-button" type="button" data-game-title="Level Devil" data-game-url="https://leveldevil-game.io">Level Devil</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">4</span>
+            <h3>Bonk.io</h3>
+            <p>Open bonk.io in the full-page game view.</p>
+            <button class="secondary-button" type="button" data-game-title="Bonk.io" data-game-url="https://bonk.io">Bonk.io</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="apps" data-view>
+        <div class="page-heading">
+          <h2>Apps</h2>
+          <p>Choose an app and it opens on its own full-page iframe view.</p>
+        </div>
+
+        <div class="game-grid">
+          <article class="game-card">
+            <span class="game-icon">1</span>
+            <h3>CrazyGames</h3>
+            <p>Open crazygames.com in the full-page app view.</p>
+            <button class="secondary-button" type="button" data-game-title="CrazyGames" data-game-url="https://www.crazygames.com" data-return-tab="apps" data-frame-mode="external">CrazyGames</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">2</span>
+            <h3>Poki</h3>
+            <p>Open poki.com in the full-page app view.</p>
+            <button class="secondary-button" type="button" data-game-title="Poki" data-game-url="https://poki.com" data-return-tab="apps" data-frame-mode="external">Poki</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">3</span>
+            <h3>Google</h3>
+            <p>Open Google in the full-page app view.</p>
+            <button class="secondary-button" type="button" data-game-title="Google" data-game-url="https://www.google.com/webhp?igu=1" data-return-tab="apps">Google</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">4</span>
+            <h3>Youtube</h3>
+            <p>Open youtube.com in the full-page app view.</p>
+            <button class="secondary-button" type="button" data-game-title="Youtube" data-game-url="https://www.youtube.com" data-return-tab="apps" data-frame-mode="external">Youtube</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">5</span>
+            <h3>TwoPlayerGames</h3>
+            <p>Open twoplayergames.org in the full-page app view.</p>
+            <button class="secondary-button" type="button" data-game-title="TwoPlayerGames" data-game-url="https://www.twoplayergames.org" data-return-tab="apps">TwoPlayerGames</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">6</span>
+            <h3>Addicting Games</h3>
+            <p>Open addictinggames.com in the full-page app view.</p>
+            <button class="secondary-button" type="button" data-game-title="Addicting Games" data-game-url="https://www.addictinggames.com" data-return-tab="apps">Addicting Games</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="view game-page" id="gamePage" data-view aria-label="Game page">
+        <header class="game-page-header">
+          <div class="game-page-left">
+            <button class="icon-button" type="button" id="backToGamesButton" aria-label="Back">←</button>
+            <span class="brand-mark">X</span>
+            <span class="game-page-title">
+              <strong id="gamePageTitle">Game</strong>
+              <span id="gamePageUrl">Choose a game</span>
+            </span>
+          </div>
+
+          <div class="game-page-actions">
+            <button class="icon-button" type="button" id="reloadGameButton" aria-label="Reload game">↻</button>
+            <button class="secondary-button" type="button" id="openDirectButton">Open Direct</button>
+          </div>
+        </header>
+
+        <div class="frame-area">
+          <div class="frame-notice" id="frameNotice" aria-live="polite">
+            <div class="frame-notice-inner">
+              <h2 id="frameNoticeTitle">This site blocks iframe loading</h2>
+              <p id="frameNoticeText">Use Open Direct to launch it in a normal tab.</p>
+              <button class="primary-button" type="button" id="frameNoticeButton">Open Direct</button>
+            </div>
+          </div>
+
+          <iframe
+            class="game-frame"
+            id="gameFrame"
+            title="Game player"
+            src="about:blank"
+            allow="fullscreen; autoplay; gamepad; pointer-lock; clipboard-read; clipboard-write"
+            referrerpolicy="no-referrer"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </section>
+
+      <section class="view" id="settings" data-view>
+        <div class="page-heading">
+          <h2>Settings</h2>
+          <p>Adjust the tab title, panic shortcut, and launch behavior.</p>
+        </div>
+
+        <div class="setting-list">
+          <label class="setting-row">
+            <span>
+              <h3>Page title</h3>
+              <p>Changes the browser tab title for this page.</p>
+            </span>
+            <input id="titleSetting" type="text" value="XSKULLX">
+          </label>
+
+          <label class="setting-row">
+            <span>
+              <h3>Panic shortcut</h3>
+              <p>Choose the key that toggles the classroom cover.</p>
+            </span>
+            <select id="panicKeySetting">
+              <option value="`">`</option>
+              <option value="Escape">Escape</option>
+              <option value="p">P</option>
+            </select>
+          </label>
+
+          <label class="setting-row">
+            <span>
+              <h3>Open games in about:blank</h3>
+              <p>Game buttons can open directly or through the blank-page launcher.</p>
+            </span>
+            <select id="gameLaunchSetting">
+              <option value="direct">Iframe player</option>
+              <option value="blank">About blank</option>
+            </select>
+          </label>
+
+          <label class="setting-row">
+            <span>
+              <h3>Auto cloaking</h3>
+              <p>Automatically open this site inside about:blank when the page loads.</p>
+            </span>
+            <select id="autoCloakSetting">
+              <option value="off">Disabled</option>
+              <option value="on">Enabled</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="view" id="deploy" data-view>
+        <div class="page-heading">
+          <h2>About Blank Deployment</h2>
+          <p>Open a clean about:blank tab and write this app into it.</p>
+        </div>
+
+        <div class="launcher-panel">
+          <strong>Blank launcher</strong>
+          <span>This creates a new about:blank page, copies the current app into it, and keeps the visible URL as about:blank when the browser allows it.</span>
+          <div class="launcher-actions">
+            <button class="primary-button" type="button" id="aboutBlankButton">Open in about:blank</button>
+            <button class="secondary-button" type="button" id="copySourceButton">Copy page code</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="shortcut-bar" aria-label="Keyboard shortcuts">
+    <span><kbd id="panicKeyLabel">`</kbd> cover</span>
+    <span><kbd>]</kbd> close</span>
+  </div>
+
+  <aside class="classroom-cover" id="classroomCover" hidden aria-label="Classroom cover view">
+    <header class="classroom-topbar">
+      <span class="classroom-logo" aria-hidden="true">C</span>
+      <span>Google Classroom</span>
+    </header>
+
+    <section class="classroom-content">
+      <h2>Classes</h2>
+
+      <div class="class-list">
+        <article class="class-card">
+          <div class="class-title">Math - Period 3</div>
+          <div class="class-status">No upcoming work</div>
+        </article>
+
+        <article class="class-card">
+          <div class="class-title">Science - Period 4</div>
+          <div class="class-status">No upcoming work</div>
+        </article>
+      </div>
+    </section>
+  </aside>
+
+  <script>
+    const classroomCover = document.querySelector("#classroomCover");
+    const tabButtons = document.querySelectorAll("[data-tab]");
+    const views = document.querySelectorAll("[data-view]");
+    const titleSetting = document.querySelector("#titleSetting");
+    const panicKeySetting = document.querySelector("#panicKeySetting");
+    const panicKeyLabel = document.querySelector("#panicKeyLabel");
+    const gameLaunchSetting = document.querySelector("#gameLaunchSetting");
+    const autoCloakSetting = document.querySelector("#autoCloakSetting");
+    const aboutBlankButton = document.querySelector("#aboutBlankButton");
+    const copySourceButton = document.querySelector("#copySourceButton");
+    const quickLaunchButton = document.querySelector("#quickLaunchButton");
+    const gameFrame = document.querySelector("#gameFrame");
+    const gamePageTitle = document.querySelector("#gamePageTitle");
+    const gamePageUrl = document.querySelector("#gamePageUrl");
+    const backToGamesButton = document.querySelector("#backToGamesButton");
+    const reloadGameButton = document.querySelector("#reloadGameButton");
+    const openDirectButton = document.querySelector("#openDirectButton");
+    const frameNotice = document.querySelector("#frameNotice");
+    const frameNoticeTitle = document.querySelector("#frameNoticeTitle");
+    const frameNoticeText = document.querySelector("#frameNoticeText");
+    const frameNoticeButton = document.querySelector("#frameNoticeButton");
+
+    let panicMode = false;
+    let panicKey = panicKeySetting.value;
+    let activeGameUrl = "";
+    let activeGameTitle = "";
+    let activeReturnTab = "games";
+    let autoCloakEnabled = localStorage.getItem("xskullx-auto-cloak") === "on";
+
+    autoCloakSetting.value = autoCloakEnabled ? "on" : "off";
+
+    document.addEventListener("keydown", handleShortcut);
+
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => setActiveTab(button.dataset.tab));
+    });
+
+    document.querySelectorAll("[data-open-tab]").forEach((button) => {
+      button.addEventListener("click", () => setActiveTab(button.dataset.openTab));
+    });
+
+    document.querySelectorAll("[data-game-url]").forEach((button) => {
+      button.addEventListener("click", () => openGame(button.dataset.gameUrl, button.dataset.gameTitle, button.dataset.returnTab || "games", button.dataset.frameMode || "iframe"));
+    });
+
+    titleSetting.addEventListener("input", () => {
+      document.title = titleSetting.value.trim() || "XSKULLX";
+    });
+
+    panicKeySetting.addEventListener("change", () => {
+      panicKey = panicKeySetting.value;
+      panicKeyLabel.textContent = panicKey;
+    });
+
+    autoCloakSetting.addEventListener("change", () => {
+      autoCloakEnabled = autoCloakSetting.value === "on";
+      localStorage.setItem("xskullx-auto-cloak", autoCloakEnabled ? "on" : "off");
+    });
+
+    aboutBlankButton.addEventListener("click", deployAboutBlank);
+    quickLaunchButton.addEventListener("click", deployAboutBlank);
+    backToGamesButton.addEventListener("click", backToGames);
+    reloadGameButton.addEventListener("click", reloadGameFrame);
+    openDirectButton.addEventListener("click", openActiveDirect);
+    frameNoticeButton.addEventListener("click", openActiveDirect);
+
+    copySourceButton.addEventListener("click", async () => {
+      await navigator.clipboard.writeText(getCleanPageSource());
+      copySourceButton.textContent = "Copied";
+      setTimeout(() => {
+        copySourceButton.textContent = "Copy page code";
+      }, 1200);
+    });
+
+    if (autoCloakEnabled && document.documentElement.dataset.cloaked !== "true") {
+      setTimeout(() => {
+        deployAboutBlank({ auto: true });
+      }, 250);
+    }
+
+    function setActiveTab(tabId) {
+      tabButtons.forEach((button) => {
+        button.setAttribute("aria-selected", String(button.dataset.tab === tabId));
+      });
+
+      views.forEach((view) => {
+        view.classList.toggle("active", view.id === tabId);
+      });
+    }
+
+    function handleShortcut(event) {
+      if (event.repeat || isTyping(event.target)) {
+        return;
+      }
+
+      if (event.key === panicKey) {
+        event.preventDefault();
+        toggleClassroomCover();
+      }
+
+      if (event.key === "]") {
+        event.preventDefault();
+        closeCurrentTab();
+      }
+    }
+
+    function isTyping(element) {
+      const tagName = element.tagName;
+      return element.isContentEditable || tagName === "INPUT" || tagName === "TEXTAREA" || tagName === "SELECT";
+    }
+
+    function toggleClassroomCover() {
+      panicMode = !panicMode;
+      classroomCover.hidden = !panicMode;
+    }
+
+    function closeCurrentTab() {
+      window.close();
+
+      setTimeout(() => {
+        if (!window.closed) {
+          window.location.replace("about:blank");
+        }
+      }, 100);
+    }
+
+    function openGame(url, title, returnTab = "games", frameMode = "iframe") {
+      if (gameLaunchSetting.value === "blank") {
+        deployAboutBlank({ gameUrl: url, gameTitle: title, frameMode });
+        return;
+      }
+
+      openGamePage(url, title, returnTab, frameMode);
+    }
+
+    function openGamePage(url, title, returnTab = "games", frameMode = "iframe") {
+      activeGameUrl = url;
+      activeGameTitle = title;
+      activeReturnTab = returnTab;
+      gamePageTitle.textContent = title;
+      gamePageUrl.textContent = url;
+      frameNotice.classList.toggle("active", frameMode === "external");
+
+      if (frameMode === "external") {
+        gameFrame.src = "about:blank";
+        frameNoticeTitle.textContent = `${title} blocks iframe loading`;
+        frameNoticeText.textContent = "This site will not render inside an iframe. Use Open Direct to launch it in a normal tab.";
+      } else {
+        gameFrame.src = url;
+      }
+
+      setActiveTab("gamePage");
+    }
+
+    function backToGames() {
+      gameFrame.src = "about:blank";
+      gamePageTitle.textContent = "Game";
+      gamePageUrl.textContent = "Choose a game";
+      activeGameUrl = "";
+      activeGameTitle = "";
+      frameNotice.classList.remove("active");
+      setActiveTab(activeReturnTab);
+    }
+
+    function reloadGameFrame() {
+      if (!activeGameUrl) {
+        return;
+      }
+
+      gameFrame.src = "about:blank";
+      setTimeout(() => {
+        gameFrame.src = activeGameUrl;
+      }, 50);
+    }
+
+    function openActiveDirect() {
+      if (!activeGameUrl) {
+        return;
+      }
+
+      window.open(activeGameUrl, "_blank", "noopener,noreferrer");
+    }
+
+    function deployAboutBlank(options = {}) {
+      const blankWindow = window.open("about:blank", "_blank");
+
+      if (!blankWindow) {
+        alert("Popup blocked. Allow popups for this page and try again.");
+        return;
+      }
+
+      const pageSource = options.gameUrl ? createGameFramePage(options.gameUrl, options.gameTitle, options.frameMode) : getCleanPageSource();
+
+      blankWindow.document.open();
+      blankWindow.document.write(pageSource);
+      blankWindow.document.close();
+    }
+
+    function getCleanPageSource() {
+      const pageClone = document.documentElement.cloneNode(true);
+      pageClone.dataset.cloaked = "true";
+      const clonedFrame = pageClone.querySelector("#gameFrame");
+      const clonedGameTitle = pageClone.querySelector("#gamePageTitle");
+      const clonedGameUrl = pageClone.querySelector("#gamePageUrl");
+      const clonedNotice = pageClone.querySelector("#frameNotice");
+      const clonedCover = pageClone.querySelector("#classroomCover");
+      const clonedViews = pageClone.querySelectorAll("[data-view]");
+      const clonedTabs = pageClone.querySelectorAll("[data-tab]");
+
+      clonedFrame.setAttribute("src", "about:blank");
+      clonedGameTitle.textContent = "Game";
+      clonedGameUrl.textContent = "Choose a game";
+      clonedNotice.classList.remove("active");
+      clonedCover.setAttribute("hidden", "");
+
+      clonedViews.forEach((view) => {
+        view.classList.toggle("active", view.id === "home");
+      });
+
+      clonedTabs.forEach((button) => {
+        button.setAttribute("aria-selected", String(button.dataset.tab === "home"));
+      });
+
+      return `<!DOCTYPE html>\n${pageClone.outerHTML}`;
+    }
+
+    function createGameFramePage(gameUrl, gameTitle = "Game", frameMode = "iframe") {
+      const externalNotice = frameMode === "external";
+
+      return `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>XSKULLX</title>
+          <style>
+            body {
+              margin: 0;
+              min-height: 100vh;
+              background: #111217;
+              color: #f7f8ff;
+              font-family: Arial, sans-serif;
+            }
+
+            .bar {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 12px;
+              min-height: 58px;
+              padding: 9px 14px;
+              border-bottom: 1px solid #343849;
+              background: #1b1d26;
+            }
+
+            .left,
+            .actions {
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              min-width: 0;
+            }
+
+            .logo,
+            button {
+              display: grid;
+              place-items: center;
+              width: 40px;
+              height: 40px;
+              border: 1px solid #343849;
+              border-radius: 8px;
+              background: #242735;
+              color: #f7f8ff;
+            }
+
+            button {
+              cursor: pointer;
+              font: inherit;
+              font-size: 1.15rem;
+            }
+
+            .logo {
+              color: #47d6a8;
+              font-weight: 800;
+            }
+
+            .title {
+              display: grid;
+              gap: 2px;
+              min-width: 0;
+            }
+
+            .title strong,
+            .title span {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+
+            .title span {
+              color: #aeb4c8;
+              font-size: 0.85rem;
+            }
+
+            iframe {
+              display: ${externalNotice ? "none" : "block"};
+              width: 100vw;
+              height: calc(100vh - 58px);
+              border: 0;
+              background: #08090d;
+            }
+
+            .notice {
+              display: ${externalNotice ? "grid" : "none"};
+              place-items: center;
+              height: calc(100vh - 58px);
+              padding: 24px;
+              text-align: center;
+            }
+
+            .notice-inner {
+              display: grid;
+              gap: 12px;
+              width: min(520px, 100%);
+              padding: 22px;
+              border: 1px solid #343849;
+              border-radius: 8px;
+              background: #1b1d26;
+            }
+
+            .notice-inner p {
+              margin: 0;
+              color: #aeb4c8;
+              line-height: 1.5;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="bar">
+            <div class="left">
+              <button type="button" aria-label="Back" onclick="history.length > 1 ? history.back() : window.close()">←</button>
+              <span class="logo">X</span>
+              <span class="title">
+                <strong>${escapeHtml(gameTitle)}</strong>
+                <span>${escapeHtml(gameUrl)}</span>
+              </span>
+            </div>
+            <div class="actions">
+              <button type="button" aria-label="Reload iframe" onclick="reloadGame()">↻</button>
+            </div>
+          </div>
+          <iframe
+            id="gameFrame"
+            title="${escapeHtml(gameTitle)}"
+            src="${externalNotice ? "about:blank" : escapeAttribute(gameUrl)}"
+            allow="fullscreen; autoplay; gamepad; pointer-lock; clipboard-read; clipboard-write"
+            referrerpolicy="no-referrer"
+            allowfullscreen>
+          </iframe>
+          <div class="notice">
+            <div class="notice-inner">
+              <strong>${escapeHtml(gameTitle)} blocks iframe loading</strong>
+              <p>This site will not render inside an iframe. Open it directly instead.</p>
+              <button type="button" onclick="window.open(gameUrl, '_blank', 'noopener,noreferrer')">Open Direct</button>
+            </div>
+          </div>
+          <script>
+            const gameUrl = ${JSON.stringify(gameUrl)};
+
+            function reloadGame() {
+              const frame = document.querySelector("#gameFrame");
+              frame.src = "about:blank";
+              setTimeout(() => {
+                frame.src = gameUrl;
+              }, 50);
+            }
+          <\/script>
+        </body>
+        </html>
+      `;
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, (character) => {
+        return {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          "\"": "&quot;",
+          "'": "&#39;"
+        }[character];
+      });
+    }
+
+    function escapeAttribute(value) {
+      return escapeHtml(value);
+    }
+  </script>
+</body>
+</html>
