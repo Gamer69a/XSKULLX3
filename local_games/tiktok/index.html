@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TikTok</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0f1118;
+      color: #f7f8ff;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    .bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      border-bottom: 1px solid #343849;
+      background: #1b1d26;
+    }
+
+    .bar p {
+      margin: 0;
+      color: #aeb4c8;
+      font-size: 0.85rem;
+    }
+
+    .bar-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    button {
+      border: 1px solid #343849;
+      border-radius: 8px;
+      background: #242735;
+      color: #f7f8ff;
+      padding: 8px 12px;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    button.primary {
+      border-color: #2f7d66;
+      background: #47d6a8;
+      color: #07120f;
+      font-weight: 700;
+    }
+
+    .player-wrap {
+      min-height: 0;
+      display: grid;
+      place-items: center;
+      background: #090c12;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      max-width: 420px;
+      border: 0;
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+  <header class="bar">
+    <p>TikTok blocks full-site embeds. Watch below or open the full app.</p>
+    <div class="bar-actions">
+      <button class="primary" id="openTikTokButton" type="button">Open TikTok</button>
+    </div>
+  </header>
+
+  <div class="player-wrap">
+    <iframe
+      id="tiktokPlayer"
+      title="TikTok player"
+      src="https://www.tiktok.com/player/v1/6718335390845095173?music_info=1&description=1"
+      allow="fullscreen; autoplay; encrypted-media; picture-in-picture"
+      referrerpolicy="no-referrer"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <script>
+    const TIKTOK_URL = "https://www.tiktok.com/";
+
+    document.querySelector("#openTikTokButton").addEventListener("click", () => {
+      window.open(TIKTOK_URL, "_blank", "noopener,noreferrer");
+    });
+  </script>
+</body>
+</html>

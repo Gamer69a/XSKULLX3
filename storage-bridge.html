@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>XSKULLX Storage</title>
+</head>
+<body>
+  <script>
+    const TRUSTED_SOURCE = "xskullx-parent";
+
+    function handleStoreMessage(event) {
+      const data = event.data;
+      if (!data || data.source !== TRUSTED_SOURCE || !data.id) {
+        return;
+      }
+
+      let result = null;
+      let error = null;
+
+      try {
+        switch (data.action) {
+          case "get":
+            result = localStorage.getItem(data.key);
+            break;
+          case "set":
+            localStorage.setItem(data.key, data.value);
+            result = "ok";
+            break;
+          case "remove":
+            localStorage.removeItem(data.key);
+            result = "ok";
+            break;
+          case "listPrefix": {
+            const prefix = data.prefix || "";
+            result = {};
+            for (let index = 0; index < localStorage.length; index += 1) {
+              const key = localStorage.key(index);
+              if (key && key.startsWith(prefix)) {
+                result[key] = localStorage.getItem(key);
+              }
+            }
+            break;
+          }
+          case "ping":
+            result = "ok";
+            break;
+          default:
+            error = "Unknown action";
+        }
+      } catch (storeError) {
+        error = storeError.message;
+      }
+
+      event.source.postMessage({
+        source: "xskullx-bridge",
+        id: data.id,
+        result,
+        error
+      }, event.origin);
+    }
+
+    window.addEventListener("message", handleStoreMessage);
+
+    if (window.parent !== window) {
+      window.parent.postMessage({
+        source: "xskullx-bridge",
+        type: "ready"
+      }, "*");
+    }
+  </script>
+</body>
+</html>

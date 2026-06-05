@@ -20,21 +20,40 @@
       box-sizing: border-box;
     }
 
+    html,
     body {
       margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
+      width: 100%;
+      height: 100%;
       background: var(--bg);
       color: var(--text);
       font-family: Arial, sans-serif;
       overflow: hidden;
     }
 
+    body {
+      display: grid;
+      place-items: center;
+      padding: 12px;
+    }
+
+    body.embedded {
+      padding: 0;
+    }
+
     .game {
       width: min(94vw, 720px);
+      max-height: 100%;
       display: grid;
       gap: 14px;
+      grid-template-rows: auto 1fr auto auto;
+    }
+
+    body.embedded .game {
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      padding: 10px;
     }
 
     .topbar {
@@ -66,13 +85,32 @@
       color: var(--text);
     }
 
+    .board-wrap {
+      display: grid;
+      place-items: center;
+      min-height: 0;
+    }
+
+    body.embedded .board-wrap {
+      align-content: stretch;
+    }
+
     canvas {
       width: 100%;
+      max-width: 600px;
+      max-height: 100%;
       aspect-ratio: 1;
       display: block;
       background: #090c12;
       border: 1px solid var(--line);
       border-radius: 8px;
+      touch-action: none;
+      outline: none;
+    }
+
+    body.embedded canvas {
+      max-width: min(92vw, 92vh);
+      max-height: min(92vw, 92vh);
     }
 
     .controls {
@@ -125,7 +163,9 @@
       </div>
     </section>
 
-    <canvas id="board" width="600" height="600" aria-label="Snake board"></canvas>
+    <div class="board-wrap">
+      <canvas id="board" width="600" height="600" tabindex="0" aria-label="Snake board. Click here then use arrow keys or WASD."></canvas>
+    </div>
 
     <section class="controls" aria-label="Game controls">
       <button class="primary" id="startButton" type="button">Start</button>
@@ -138,6 +178,13 @@
 
   <script>
     const saveKey = "xskullx-local-snake-save-v1";
+    const COLORS = {
+      background: "#090c12",
+      grid: "#151a25",
+      food: "#ffd166",
+      head: "#5cf2a8",
+      body: "#37c887"
+    };
     const board = document.querySelector("#board");
     const ctx = board.getContext("2d");
     const scoreEl = document.querySelector("#score");
@@ -147,11 +194,30 @@
     const pauseButton = document.querySelector("#pauseButton");
     const resetButton = document.querySelector("#resetButton");
     const size = 24;
-    const cell = board.width / size;
     const tickMs = 110;
+    const embedded = window.self !== window.top;
 
+    let cell = board.width / size;
     let state = loadState();
     let timer = null;
+
+    if (embedded) {
+      document.body.classList.add("embedded");
+      statusEl.textContent = "Click the board or Start, then use arrow keys or WASD.";
+    }
+
+    window.addEventListener("message", (event) => {
+      if (event.data?.source === "xskullx-reload-save") {
+        reloadFromStorage();
+      }
+    });
+
+    function reloadFromStorage() {
+      stopTimer();
+      state = loadState();
+      draw();
+      setStatus();
+    }
 
     function freshState() {
       return {
@@ -177,14 +243,50 @@
     }
 
     function saveState() {
-      localStorage.setItem(saveKey, JSON.stringify({ ...state, running: false }));
+      try {
+        localStorage.setItem(saveKey, JSON.stringify({ ...state, running: false }));
+      } catch (error) {
+        // Storage may be blocked in private mode or restrictive embeds.
+      }
+    }
+
+    function setStatus() {
+      if (state.gameOver) {
+        statusEl.textContent = "Game over. Press Start for a new run.";
+        return;
+      }
+
+      if (state.running) {
+        statusEl.textContent = "Playing — progress saves automatically.";
+        return;
+      }
+
+      statusEl.textContent = embedded
+        ? "Click the board or Start, then use arrow keys or WASD."
+        : "Press Start, then use arrow keys or WASD. Progress saves automatically.";
+    }
+
+    function focusBoard() {
+      board.focus({ preventScroll: true });
+    }
+
+    function resizeCanvas() {
+      const rect = board.getBoundingClientRect();
+      const pixels = Math.max(300, Math.floor(Math.min(rect.width, rect.height) || 600));
+      if (board.width !== pixels) {
+        board.width = pixels;
+        board.height = pixels;
+        cell = board.width / size;
+      }
     }
 
     function draw() {
-      ctx.fillStyle = "#090c12";
+      resizeCanvas();
+
+      ctx.fillStyle = COLORS.background;
       ctx.fillRect(0, 0, board.width, board.height);
 
-      ctx.strokeStyle = "#151a25";
+      ctx.strokeStyle = COLORS.grid;
       ctx.lineWidth = 1;
       for (let i = 0; i <= size; i++) {
         ctx.beginPath();
@@ -197,17 +299,17 @@
         ctx.stroke();
       }
 
-      ctx.fillStyle = "var(--food)";
+      ctx.fillStyle = COLORS.food;
       drawCell(state.food.x, state.food.y);
 
       state.snake.forEach((part, index) => {
-        ctx.fillStyle = index === 0 ? "var(--accent)" : "#37c887";
+        ctx.fillStyle = index === 0 ? COLORS.head : COLORS.body;
         drawCell(part.x, part.y);
       });
 
       scoreEl.textContent = state.score;
       bestEl.textContent = state.best;
-      statusEl.textContent = state.gameOver ? "Game over. Press Start for a new run." : "Progress saves automatically.";
+      setStatus();
     }
 
     function drawCell(x, y) {
@@ -271,6 +373,7 @@
 
       state.running = true;
       saveState();
+      focusBoard();
       startTimer();
       draw();
     }
@@ -278,7 +381,12 @@
     function togglePause() {
       state.running = !state.running;
       saveState();
-      state.running ? startTimer() : stopTimer();
+      if (state.running) {
+        focusBoard();
+        startTimer();
+      } else {
+        stopTimer();
+      }
       draw();
     }
 
@@ -306,19 +414,24 @@
       localStorage.removeItem(saveKey);
       state = freshState();
       stopTimer();
+      focusBoard();
       draw();
     }
 
-    document.addEventListener("keydown", (event) => {
+    function handleKeydown(event) {
       const keys = {
         ArrowUp: [0, -1],
         w: [0, -1],
+        W: [0, -1],
         ArrowDown: [0, 1],
         s: [0, 1],
+        S: [0, 1],
         ArrowLeft: [-1, 0],
         a: [-1, 0],
+        A: [-1, 0],
         ArrowRight: [1, 0],
-        d: [1, 0]
+        d: [1, 0],
+        D: [1, 0]
       };
 
       if (event.key === " ") {
@@ -330,17 +443,32 @@
       const direction = keys[event.key];
       if (direction) {
         event.preventDefault();
+        if (!state.running && !state.gameOver) {
+          startGame();
+        }
         setDirection(direction[0], direction[1]);
       }
-    });
+    }
 
+    document.addEventListener("keydown", handleKeydown);
+    board.addEventListener("pointerdown", focusBoard);
+    board.addEventListener("keydown", handleKeydown);
     startButton.addEventListener("click", startGame);
     pauseButton.addEventListener("click", togglePause);
     resetButton.addEventListener("click", resetSave);
     window.addEventListener("beforeunload", saveState);
-    document.addEventListener("visibilitychange", saveState);
+    window.addEventListener("pagehide", saveState);
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") {
+        saveState();
+      }
+    });
+    window.addEventListener("resize", draw);
 
     draw();
+    if (!embedded) {
+      focusBoard();
+    }
   </script>
 </body>
 </html>
