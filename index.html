@@ -241,23 +241,44 @@
 
     .game-page-title {
       min-width: 0;
-      display: grid;
-      gap: 2px;
-    }
-
-    .game-page-title strong,
-    .game-page-title span {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .game-page-title span {
-      color: var(--muted);
-      font-size: 0.85rem;
-    }
+
 
     .game-frame {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #08090d;
+    }
+
+    .proxy-view {
+      position: fixed;
+      inset: 0;
+      z-index: 8;
+      display: none;
+      grid-template-rows: auto 1fr;
+      background: var(--bg);
+    }
+
+    .proxy-view.active {
+      display: grid;
+    }
+
+    .proxy-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 58px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel);
+    }
+
+    .proxy-frame {
       width: 100%;
       height: 100%;
       border: 0;
@@ -487,6 +508,7 @@
         <button class="tab-button" type="button" data-tab="strongdogxp" aria-selected="false">StrongDogXP</button>
         <button class="tab-button" type="button" data-tab="settings" aria-selected="false">Settings</button>
         <button class="tab-button" type="button" data-tab="deploy" aria-selected="false">About Blank</button>
+        <button class="tab-button" type="button" data-tab="proxy" aria-selected="false">Proxy</button>
       </nav>
 
       <button class="primary-button" type="button" id="quickLaunchButton">Launch</button>
@@ -624,50 +646,50 @@
           <article class="game-card">
             <span class="game-icon">16</span>
             <h3>DialedGG</h3>
-            <p>Open DialedGG in the full-page game view.</p>
-            <button class="secondary-button" type="button" data-game-title="DialedGG" data-game-url="https://dialed.gg/">DialedGG</button>
+            <p>Open DialedGG in the embedded player route.</p>
+            <button class="secondary-button" type="button" data-game-title="DialedGG" data-game-url="https://dialedgg.run/">DialedGG</button>
           </article>
 
           <article class="game-card">
             <span class="game-icon">17</span>
             <h3>Diep</h3>
-            <p>Open diep.io in the full-page game view.</p>
-            <button class="secondary-button" type="button" data-game-title="Diep" data-game-url="https://diep.io/">Diep</button>
+            <p>Play the embeddable Diep mirror on the full-page player.</p>
+            <button class="secondary-button" type="button" data-game-title="Diep" data-game-url="https://games.crazygames.com/en_US/diepio/index.html">Diep</button>
           </article>
 
           <article class="game-card">
             <span class="game-icon">18</span>
             <h3>Mope</h3>
-            <p>Open mope.io in the full-page game view.</p>
-            <button class="secondary-button" type="button" data-game-title="Mope" data-game-url="https://mope.io/">Mope</button>
+            <p>Play the embeddable Mope mirror on the full-page player.</p>
+            <button class="secondary-button" type="button" data-game-title="Mope" data-game-url="https://games.crazygames.com/en_US/mopeio/index.html">Mope</button>
           </article>
 
           <article class="game-card">
             <span class="game-icon">19</span>
             <h3>Snowball</h3>
-            <p>Open snowball.io in the full-page game view.</p>
-            <button class="secondary-button" type="button" data-game-title="Snowball" data-game-url="https://snowball.io/">Snowball</button>
+            <p>Play the embeddable Snowball mirror on the full-page player.</p>
+            <button class="secondary-button" type="button" data-game-title="Snowball" data-game-url="https://games.crazygames.com/en_US/snowball-io/index.html">Snowball</button>
           </article>
 
           <article class="game-card">
             <span class="game-icon">20</span>
             <h3>Wormax</h3>
-            <p>Open wormax.io in the full-page game view.</p>
-            <button class="secondary-button" type="button" data-game-title="Wormax" data-game-url="https://wormax.io/">Wormax</button>
+            <p>Play Wormax via the Kiz10 embed route.</p>
+            <button class="secondary-button" type="button" data-game-title="Wormax" data-game-url="https://kiz10.com/embed/wormax-io/">Wormax</button>
           </article>
 
           <article class="game-card">
             <span class="game-icon">21</span>
             <h3>HoleIO</h3>
-            <p>Open hole.io in the full-page game view.</p>
-            <button class="secondary-button" type="button" data-game-title="HoleIO" data-game-url="https://hole.io/">HoleIO</button>
+            <p>Play the embeddable HoleIO mirror on the full-page player.</p>
+            <button class="secondary-button" type="button" data-game-title="HoleIO" data-game-url="https://games.crazygames.com/en_US/holey-io-battle-royale/index.html">HoleIO</button>
           </article>
 
           <article class="game-card">
             <span class="game-icon">22</span>
             <h3>Slope</h3>
-            <p>Open slope.io in the full-page game view.</p>
-            <button class="secondary-button" type="button" data-game-title="Slope" data-game-url="https://slope.io/">Slope</button>
+            <p>Play the embeddable Slope alternative with the site chrome removed.</p>
+            <button class="secondary-button" type="button" data-game-title="Slope" data-game-url="local_games/slope/index.html">Slope</button>
           </article>
 
         </div>
@@ -732,7 +754,7 @@
           <article class="game-card">
             <span class="game-icon">8</span>
             <h3>ChatGPT</h3>
-            <p>Open ChatGPT in the full-page app view.</p>
+            <p>Open the embeddable AI chat player.</p>
             <button class="secondary-button" type="button" data-game-title="ChatGPT" data-game-url="https://chatgpt.com/" data-return-tab="apps">ChatGPT</button>
           </article>
         </div>
@@ -7815,10 +7837,7 @@
           <div class="game-page-left">
             <button class="icon-button" type="button" id="backToGamesButton" aria-label="Back">←</button>
             <span class="brand-mark">X</span>
-            <span class="game-page-title">
-              <strong id="gamePageTitle">Game</strong>
-              <span id="gamePageUrl">Choose a game</span>
-            </span>
+            <strong class="game-page-title" id="gamePageTitle">Game</strong>
           </div>
 
           <div class="game-page-actions">
@@ -7924,6 +7943,22 @@
           </div>
         </div>
       </section>
+
+      <section class="proxy-view" id="proxy" data-view>
+        <header class="proxy-header">
+          <button class="icon-button" type="button" id="proxyBackButton" aria-label="Back to home">←</button>
+          <button class="icon-button" type="button" id="proxyReloadButton" aria-label="Reload proxy">↻</button>
+        </header>
+        <iframe
+          class="proxy-frame"
+          id="proxyFrame"
+          title="Proxy"
+          src="https://outerspace.tomashirsch.cl/"
+          allow="fullscreen; autoplay; gamepad; pointer-lock; clipboard-read; clipboard-write; storage-access-by-user-activation"
+          referrerpolicy="no-referrer"
+          allowfullscreen>
+        </iframe>
+      </section>
     </main>
   </div>
 
@@ -7970,9 +8005,12 @@
     const quickLaunchButton = document.querySelector("#quickLaunchButton");
     const gameFrame = document.querySelector("#gameFrame");
     const gamePageTitle = document.querySelector("#gamePageTitle");
-    const gamePageUrl = document.querySelector("#gamePageUrl");
+
     const backToGamesButton = document.querySelector("#backToGamesButton");
     const reloadGameButton = document.querySelector("#reloadGameButton");
+    const proxyFrame = document.querySelector("#proxyFrame");
+    const proxyBackButton = document.querySelector("#proxyBackButton");
+    const proxyReloadButton = document.querySelector("#proxyReloadButton");
     const frameNotice = document.querySelector("#frameNotice");
     const frameNoticeTitle = document.querySelector("#frameNoticeTitle");
     const frameNoticeText = document.querySelector("#frameNoticeText");
@@ -7997,12 +8035,7 @@
     };
     const IFRAME_ALLOW = "fullscreen; autoplay; gamepad; pointer-lock; clipboard-read; clipboard-write; storage-access-by-user-activation";
     const DEFAULT_STORAGE_ORIGIN = "https://gamer69a.github.io/XSKULLX/";
-    const iframeBlockedHosts = new Set([
-      "chatgpt.com",
-      "twoplayergames.org",
-      "miniplay.com",
-      "tiktok.com"
-    ]);
+    const iframeBlockedHosts = new Set([]);
 
     document.addEventListener("keydown", handleShortcut);
 
@@ -8048,6 +8081,11 @@
     quickLaunchButton.addEventListener("click", deployAboutBlank);
     backToGamesButton.addEventListener("click", backToGames);
     reloadGameButton.addEventListener("click", reloadGameFrame);
+    proxyBackButton.addEventListener("click", () => setActiveTab("home"));
+    proxyReloadButton.addEventListener("click", () => {
+      proxyFrame.src = "about:blank";
+      setTimeout(() => { proxyFrame.src = "https://outerspace.tomashirsch.cl/"; }, 50);
+    });
     frameNoticeButton.addEventListener("click", backToGames);
 
     copySourceButton.addEventListener("click", async () => {
@@ -8377,11 +8415,28 @@
 
     function loadSession() {
       const stored = readJson(localStoreGet(STORAGE.session), null);
-      if (stored) {
-        return stored;
+      const session = stored || decodeSessionPayload(window.name);
+
+      if (!session) {
+        return null;
       }
 
-      return decodeSessionPayload(window.name);
+      if (session.game?.url === "https://copilot.microsoft.com/") {
+        session.game.url = "https://chatgpt.com/";
+        session.game.title = "ChatGPT";
+      }
+
+      if (session.game?.url === "https://games.crazygames.com/en_US/slope/index.html") {
+        session.game.url = "https://xpixelcoderx.github.io/html/slope/index.html";
+        session.game.title = "Slope";
+      }
+
+      if (session.game?.url === "https://games.crazygames.com/en_US/wormaxio/index.html") {
+        session.game.url = "https://kiz10.com/embed/wormax-io/";
+        session.game.title = "Wormax";
+      }
+
+      return session;
     }
 
     function handlePersist() {
@@ -8521,11 +8576,13 @@
       });
 
       if (session.game?.url) {
+        const restoredFrameMode = getFrameMode(session.game.url, session.game.frameMode || "iframe");
+
         openGamePage(
           session.game.url,
           session.game.title || "Game",
           session.game.returnTab || "games",
-          session.game.frameMode || getFrameMode(session.game.url),
+          restoredFrameMode,
           { restore: true }
         );
       } else if (session.tab && session.tab !== "gamePage") {
@@ -8624,13 +8681,13 @@
       activeReturnTab = returnTab;
       activeFrameMode = frameMode;
       gamePageTitle.textContent = title;
-      gamePageUrl.textContent = url;
+
       frameNotice.classList.toggle("active", frameMode === "external");
 
       if (frameMode === "external") {
         hideGameFrames();
         frameNoticeTitle.textContent = `${title} cannot be embedded here`;
-        frameNoticeText.textContent = "This site blocks inline embedding in this launcher. The launcher will stay on this page instead of opening another tab.";
+        frameNoticeText.textContent = "This site blocks inline embedding in this launcher. Try the alternative card above, or open it directly from the site.";
       } else {
         showGameFrame(url, title);
       }
@@ -8720,10 +8777,6 @@
     }
 
     function getFrameMode(url, preferredMode = "iframe") {
-      if (preferredMode === "external") {
-        return "external";
-      }
-
       try {
         const host = new URL(url).hostname.replace(/^www\./, "");
         return iframeBlockedHosts.has(host) ? "external" : "iframe";
@@ -8784,11 +8837,15 @@
       }
       const clonedFrame = pageClone.querySelector("#gameFrame");
       const clonedGameTitle = pageClone.querySelector("#gamePageTitle");
-      const clonedGameUrl = pageClone.querySelector("#gamePageUrl");
       const clonedNotice = pageClone.querySelector("#frameNotice");
       const clonedCover = pageClone.querySelector("#classroomCover");
       const clonedViews = pageClone.querySelectorAll("[data-view]");
       const clonedTabs = pageClone.querySelectorAll("[data-tab]");
+
+      const clonedProxyFrame = pageClone.querySelector("#proxyFrame");
+      if (clonedProxyFrame) {
+        clonedProxyFrame.setAttribute("src", "about:blank");
+      }
 
       pageClone.querySelectorAll(".game-frame").forEach((frame) => {
         if (frame !== clonedFrame) {
@@ -8799,7 +8856,6 @@
       clonedFrame.setAttribute("src", "about:blank");
       clonedFrame.removeAttribute("hidden");
       clonedGameTitle.textContent = "Game";
-      clonedGameUrl.textContent = "Choose a game";
       clonedNotice.classList.remove("active");
       clonedCover.setAttribute("hidden", "");
 
@@ -8876,21 +8932,11 @@
             }
 
             .title {
-              display: grid;
-              gap: 2px;
               min-width: 0;
-            }
-
-            .title strong,
-            .title span {
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
-            }
-
-            .title span {
-              color: #aeb4c8;
-              font-size: 0.85rem;
+              font-weight: 700;
             }
 
             iframe {
@@ -8931,10 +8977,7 @@
             <div class="left">
               <button type="button" aria-label="Back" onclick="history.length > 1 ? history.back() : window.close()">←</button>
               <span class="logo">X</span>
-              <span class="title">
-                <strong>${escapeHtml(gameTitle)}</strong>
-                <span>${escapeHtml(gameUrl)}</span>
-              </span>
+              <strong class="title">${escapeHtml(gameTitle)}</strong>
             </div>
             <div class="actions">
               <button type="button" aria-label="Reload iframe" onclick="reloadGame()">↻</button>
