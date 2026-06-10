@@ -157,6 +157,73 @@
       margin-bottom: 16px;
     }
 
+    .game-grid.compact {
+      grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+      gap: 10px;
+    }
+
+    .game-grid.compact .game-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 4px 6px;
+      min-height: 0;
+      cursor: pointer;
+      transition: border-color 0.12s;
+    }
+
+    .game-grid.compact .game-card:hover {
+      border-color: var(--accent);
+    }
+
+    .game-grid.compact .game-card h3 {
+      margin: 0;
+      font-size: 0.6rem;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.12s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      letter-spacing: 0;
+      line-height: 1.2;
+    }
+
+    .game-grid.compact .game-card:hover h3 {
+      opacity: 1;
+    }
+
+    .game-grid.compact .game-card p {
+      display: none;
+    }
+
+    .game-grid.compact .game-card .secondary-button {
+      position: absolute;
+      inset: 0;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      opacity: 0;
+      cursor: pointer;
+      padding: 0;
+      margin: 0;
+      min-height: 0;
+      font-size: 0;
+    }
+
+    .game-grid.compact .game-card .game-icon {
+      width: 36px;
+      height: 36px;
+      font-size: 0.75rem;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      flex-shrink: 0;
+    }
+
     .game-card,
     .setting-row,
     .launcher-panel {
@@ -504,11 +571,11 @@
       <nav class="tabs" aria-label="Main tabs">
         <button class="tab-button" type="button" data-tab="home" aria-selected="true">Home</button>
         <button class="tab-button" type="button" data-tab="games" aria-selected="false">Games</button>
+        <button class="tab-button" type="button" data-tab="proxy" aria-selected="false">Proxy</button>
         <button class="tab-button" type="button" data-tab="apps" aria-selected="false">Apps</button>
         <button class="tab-button" type="button" data-tab="strongdogxp" aria-selected="false">StrongDogXP</button>
-        <button class="tab-button" type="button" data-tab="settings" aria-selected="false">Settings</button>
         <button class="tab-button" type="button" data-tab="deploy" aria-selected="false">About Blank</button>
-        <button class="tab-button" type="button" data-tab="proxy" aria-selected="false">Proxy</button>
+        <button class="tab-button" type="button" data-tab="settings" aria-selected="false">Settings</button>
       </nav>
 
       <button class="primary-button" type="button" id="quickLaunchButton">Launch</button>
@@ -537,7 +604,7 @@
           <p>Choose a game and it opens on its own full-page iframe view.</p>
         </div>
 
-        <div class="game-grid">
+        <div class="game-grid compact">
           <article class="game-card">
             <span class="game-icon">1</span>
             <h3>EvoWorld</h3>
@@ -546,24 +613,10 @@
           </article>
 
           <article class="game-card">
-            <span class="game-icon">2</span>
-            <h3>Level Devil Games</h3>
-            <p>Open leveldevilgames.github.io in the full-page game view.</p>
-            <button class="secondary-button" type="button" data-game-title="Level Devil Games" data-game-url="https://leveldevilgames.github.io/">Level Devil Games</button>
-          </article>
-
-          <article class="game-card">
             <span class="game-icon">3</span>
             <h3>Wizard Kart</h3>
             <p>Open kart.wizardsbasketball.com in the full-page game view.</p>
             <button class="secondary-button" type="button" data-game-title="Wizard Kart" data-game-url="https://kart.wizardsbasketball.com/">Wizard Kart</button>
-          </article>
-
-          <article class="game-card">
-            <span class="game-icon">4</span>
-            <h3>Eaglercraft</h3>
-            <p>Open client.eaglercraft.win in the full-page game view.</p>
-            <button class="secondary-button" type="button" data-game-title="Eaglercraft" data-game-url="https://client.eaglercraft.win/">Eaglercraft</button>
           </article>
 
           <article class="game-card">
@@ -637,38 +690,10 @@
           </article>
 
           <article class="game-card">
-            <span class="game-icon">15</span>
-            <h3>City Bus Driving Simulater</h3>
-            <p>Play City Bus Driver (Mathf Games) via the embeddable CrazyGames player on your site.</p>
-            <button class="secondary-button" type="button" data-game-title="City Bus Driving Simulater" data-game-url="local_games/city-bus-driver/index.html">City Bus Driving Simulater</button>
-          </article>
-
-          <article class="game-card">
-            <span class="game-icon">16</span>
-            <h3>DialedGG</h3>
-            <p>Open DialedGG in the embedded player route.</p>
-            <button class="secondary-button" type="button" data-game-title="DialedGG" data-game-url="https://dialedgg.run/">DialedGG</button>
-          </article>
-
-          <article class="game-card">
             <span class="game-icon">17</span>
             <h3>Diep</h3>
             <p>Play the embeddable Diep mirror on the full-page player.</p>
             <button class="secondary-button" type="button" data-game-title="Diep" data-game-url="https://games.crazygames.com/en_US/diepio/index.html">Diep</button>
-          </article>
-
-          <article class="game-card">
-            <span class="game-icon">18</span>
-            <h3>Mope</h3>
-            <p>Play the embeddable Mope mirror on the full-page player.</p>
-            <button class="secondary-button" type="button" data-game-title="Mope" data-game-url="https://games.crazygames.com/en_US/mopeio/index.html">Mope</button>
-          </article>
-
-          <article class="game-card">
-            <span class="game-icon">19</span>
-            <h3>Snowball</h3>
-            <p>Play the embeddable Snowball mirror on the full-page player.</p>
-            <button class="secondary-button" type="button" data-game-title="Snowball" data-game-url="https://games.crazygames.com/en_US/snowball-io/index.html">Snowball</button>
           </article>
 
           <article class="game-card">
@@ -686,31 +711,10 @@
           </article>
 
           <article class="game-card">
-            <span class="game-icon">22</span>
-            <h3>Slope</h3>
-            <p>Play the embeddable Slope alternative with the site chrome removed.</p>
-            <button class="secondary-button" type="button" data-game-title="Slope" data-game-url="local_games/slope/index.html">Slope</button>
-          </article>
-
-          <article class="game-card">
             <span class="game-icon">23</span>
             <h3>YORG.io</h3>
             <p>Build your base and defend it from zombies in this tower-defense game.</p>
             <button class="secondary-button" type="button" data-game-title="YORG.io" data-game-url="https://yorg.io/">YORG.io</button>
-          </article>
-
-          <article class="game-card">
-            <span class="game-icon">24</span>
-            <h3>Endless Siege</h3>
-            <p>Defend your castle with towers against endless waves of enemies.</p>
-            <button class="secondary-button" type="button" data-game-title="Endless Siege" data-game-url="https://classroom6xhub.github.io/endless-siege">Endless Siege</button>
-          </article>
-
-          <article class="game-card">
-            <span class="game-icon">25</span>
-            <h3>DefenseMania</h3>
-            <p>Play DefenseMania in the full-page game view.</p>
-            <button class="secondary-button" type="button" data-game-title="DefenseMania" data-game-url="http://defensemania.github.io/">DefenseMania</button>
           </article>
 
           <article class="game-card">
@@ -720,6 +724,130 @@
             <button class="secondary-button" type="button" data-game-title="DeflyIO" data-game-url="https://defly.io/">DeflyIO</button>
           </article>
 
+          <article class="game-card">
+            <span class="game-icon">27</span>
+            <h3>Moomoo.io</h3>
+            <p>Play moomoo.io in the full-page game view.</p>
+            <button class="secondary-button" type="button" data-game-title="Moomoo.io" data-game-url="https://moomoo.io/">Moomoo.io</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">28</span>
+            <h3>SandSaga</h3>
+            <p>Open sandsaga.com in the full-page game view.</p>
+            <button class="secondary-button" type="button" data-game-title="SandSaga" data-game-url="https://sandsaga.com/">SandSaga</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">29</span>
+            <h3>SandSaga HaragCZ</h3>
+            <p>Open harag.cz sand-game-js in the full-page game view.</p>
+            <button class="secondary-button" type="button" data-game-title="SandSaga HaragCZ" data-game-url="https://harag.cz/app/sand-game-js">SandSaga HaragCZ</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">30</span>
+            <h3>20 Mins Till Dawn</h3>
+            <p>Open miniplay.com game in the full-page game view.</p>
+            <button class="secondary-button" type="button" data-game-title="20 Mins Till Dawn" data-game-url="https://www.miniplay.com/game/20-minutes-till-dawn">20 Mins Till Dawn</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">31</span>
+            <h3>Sandspiel</h3>
+            <p>Open sandspiel.club in the full-page game view.</p>
+            <button class="secondary-button" type="button" data-game-title="Sandspiel" data-game-url="https://sandspiel.club/">Sandspiel</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">32</span>
+            <h3>Time Shooter 3</h3>
+            <p>Open gamebol.com game in the full-page game view.</p>
+            <button class="secondary-button" type="button" data-game-title="Time Shooter 3" data-game-url="https://gamebol.com/time-shooter-3-swat">Time Shooter 3</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">33</span>
+            <h3>7 Days to Die</h3>
+            <p>Open 7daystodie.com in the full-page game view.</p>
+            <button class="secondary-button" type="button" data-game-title="7 Days to Die" data-game-url="https://7daystodie.com/">7 Days to Die</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">34</span>
+            <h3>BloxdIO</h3>
+            <p>Open bloxd.io in the full-page game view.</p>
+            <button class="secondary-button" type="button" data-game-title="BloxdIO" data-game-url="https://bloxd.io/">BloxdIO</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">35</span>
+            <h3>Rocket League 2d</h3>
+            <p>Open matharoo.itch.io/rl2d in the full-page game view.</p>
+            <button class="secondary-button" type="button" data-game-title="Rocket League 2d" data-game-url="https://html-classic.itch.zone/html/3325334/index.html?v=1732313787">Rocket League 2d</button>
+          </article>
+        </div>
+
+        <div class="game-grid" id="games-fallback">
+          <article class="game-card">
+            <span class="game-icon">2</span>
+            <h3>Level Devil Games</h3>
+            <button class="secondary-button" type="button" data-game-title="Level Devil Games" data-game-url="https://leveldevilgames.github.io/">Level Devil Games</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">4</span>
+            <h3>Eaglercraft</h3>
+            <button class="secondary-button" type="button" data-game-title="Eaglercraft" data-game-url="https://client.eaglercraft.win/">Eaglercraft</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">15</span>
+            <h3>City Bus Driving Simulater</h3>
+            <button class="secondary-button" type="button" data-game-title="City Bus Driving Simulater" data-game-url="local_games/city-bus-driver/index.html">City Bus Driving Simulater</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">16</span>
+            <h3>DialedGG</h3>
+            <button class="secondary-button" type="button" data-game-title="DialedGG" data-game-url="https://dialedgg.run/">DialedGG</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">18</span>
+            <h3>Mope</h3>
+            <button class="secondary-button" type="button" data-game-title="Mope" data-game-url="https://games.crazygames.com/en_US/mopeio/index.html">Mope</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">19</span>
+            <h3>Snowball</h3>
+            <button class="secondary-button" type="button" data-game-title="Snowball" data-game-url="https://games.crazygames.com/en_US/snowball-io/index.html">Snowball</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">22</span>
+            <h3>Slope</h3>
+            <button class="secondary-button" type="button" data-game-title="Slope" data-game-url="local_games/slope/index.html">Slope</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">24</span>
+            <h3>Endless Siege</h3>
+            <button class="secondary-button" type="button" data-game-title="Endless Siege" data-game-url="https://classroom6xhub.github.io/endless-siege">Endless Siege</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">25</span>
+            <h3>DefenseMania</h3>
+            <button class="secondary-button" type="button" data-game-title="DefenseMania" data-game-url="http://defensemania.github.io/">DefenseMania</button>
+          </article>
+
+          <article class="game-card">
+            <span class="game-icon">35</span>
+            <h3>Tanuki Sunset</h3>
+            <button class="secondary-button" type="button" data-game-title="Tanuki Sunset" data-game-url="https://tanukisunset.fun/">Tanuki Sunset</button>
+          </article>
         </div>
       </section>
 
@@ -794,7 +922,7 @@
           <p>Choose a StrongDogXP game and it opens directly in the full-page iframe view.</p>
         </div>
 
-        <div class="game-grid">
+        <div class="game-grid compact">
           <article class="game-card">
             <span class="game-icon">1</span>
             <h3>Sans Fight</h3>
@@ -8077,6 +8205,113 @@
 
     document.querySelectorAll("[data-game-url]").forEach((button) => {
       button.addEventListener("click", () => openGame(button.dataset.gameUrl, button.dataset.gameTitle, button.dataset.returnTab || "games", getFrameMode(button.dataset.gameUrl, button.dataset.frameMode)));
+    });
+
+    const hardcodedLogos = {
+      "EvoWorld": "https://evoworld.io/favicon.ico",
+      "Level Devil Games": "https://icons.duckduckgo.com/ip3/leveldevilgames.github.io.ico",
+      "Wizard Kart": "https://kart.wizardsbasketball.com/TemplateData/favicon.ico",
+      "Eaglercraft": "https://icons.duckduckgo.com/ip3/client.eaglercraft.win.ico",
+      "Bonk.io": "https://bonk.io/graphics/tt/favicon-32x32.png",
+      "Copter.io": "https://copter.io/favicon/apple-icon-60x60.png",
+      "YoHoHo.io": "https://yohoho.io/favicon/favicon.ico",
+      "Drift Boss": "https://driftbossonline.github.io/images/favicon.png",
+      "Saved Snake": "https://snake.io/favicon.ico",
+      "Snake.io": "https://snake.io/favicon.ico",
+      "Slither.io": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Logo_of_Slither.io-2024.png",
+      "Wings.io": "https://wings.io/images/favicon.png",
+      "Slow Roads": "https://slowroads.io/favicon.ico",
+      "Subway Surfers": "https://static.wikia.nocookie.net/logopedia/images/5/5e/Subway-surfers-Logo.png",
+      "City Bus Driving Simulater": "https://icons.duckduckgo.com/ip3/crazygames.com.ico",
+      "DialedGG": "https://icons.duckduckgo.com/ip3/dialedgg.run.ico",
+      "Diep": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Diep.io_03.png",
+      "Mope": "https://icons.duckduckgo.com/ip3/games.crazygames.com.ico",
+      "Snowball": "https://icons.duckduckgo.com/ip3/games.crazygames.com.ico",
+      "Wormax": "https://cdn.kiz10.com/upload/thumbnails/icons/apple-touch-icon.png",
+      "HoleIO": "https://dl.svgcdn.com/svg/arcticons/hole-io.svg",
+      "Slope": "https://icons.duckduckgo.com/ip3/y8.com.ico",
+      "YORG.io": "https://yorg.io/assets/logo.png",
+      "Endless Siege": "https://icons.duckduckgo.com/ip3/classroom6xhub.github.io.ico",
+      "DefenseMania": "https://icons.duckduckgo.com/ip3/defensemania.github.io.ico",
+      "DeflyIO": "https://defly.io/favicon/apple-icon-60x60.png",
+      "Moomoo.io": "https://moomoo.io/img/favicon.png",
+      "SandSaga": "https://sandsaga.com/favicon.ico",
+      "SandSaga HaragCZ": "https://harag.cz/favicon.ico",
+      "20 Mins Till Dawn": "https://www.miniplay.com/favicon.ico",
+      "Sandspiel": "https://sandspiel.club/assets/favicon-32x32.png",
+      "Time Shooter 3": "https://gamebol.com/favicon.ico",
+      "7 Days to Die": "https://7daystodie.com/wp-content/uploads/2016/04/cropped-7dtd_site_icon.png",
+      "BloxdIO": "https://bloxd.io/favicon.ico",
+      "Rocket League 2d": "https://itch.io/favicon.ico"
+    };
+    const sdgxpImgMap = {};
+    let sdgxpMapLoaded = false;
+    async function loadSdgxpMap() {
+      try {
+        const resp = await fetch("https://api.allorigins.win/get?url=https://xpixelcoderx.github.io/cards-data.js");
+        const data = await resp.json();
+        const text = data.contents;
+        const regex = /\{\s*href:\s*['"]([^'"]+)['"],\s*imgSrc:\s*['"]([^'"]+)['"],\s*name:\s*['"][^'"]*['"][^}]*\}/g;
+        let m;
+        while ((m = regex.exec(text)) !== null) {
+          sdgxpImgMap[m[1].replace(/^\.\//, "")] = { href: m[1], imgSrc: m[2] };
+        }
+        sdgxpMapLoaded = true;
+      } catch (e) { console.warn("sdgxp map failed", e); }
+    }
+    const sdgxpMapReady = loadSdgxpMap();
+
+    function tryFaviconFallback(btn, icon) {
+      let domain;
+      try { domain = new URL(btn.dataset.gameUrl).hostname.replace(/^www\./, ""); } catch (e) { return; }
+      const fb = [
+        `https://${domain}/favicon.ico`,
+        `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+        `https://www.google.com/s2/favicons?domain=${domain}&sz=64`
+      ];
+      let i = 0;
+      const next = () => {
+        if (i >= fb.length) return;
+        const img = new Image();
+        img.onload = () => { icon.style.backgroundImage = `url(${fb[i]})`; };
+        img.onerror = () => { i++; next(); };
+        img.src = fb[i];
+      };
+      next();
+    }
+
+    document.querySelectorAll("#games .game-card, #strongdogxp .game-card").forEach((card) => {
+      const btn = card.querySelector(".secondary-button");
+      const icon = card.querySelector(".game-icon");
+      if (!btn || !icon) return;
+      icon.textContent = "";
+      const title = btn.dataset.gameTitle;
+      const isSdgxp = btn.dataset.returnTab === "strongdogxp";
+      if (hardcodedLogos[title]) {
+        const img = new Image();
+        img.onload = () => { icon.style.backgroundImage = `url(${hardcodedLogos[title]})`; };
+        img.onerror = () => tryFaviconFallback(btn, icon);
+        img.src = hardcodedLogos[title];
+      } else if (isSdgxp) {
+        (async () => {
+          await sdgxpMapReady;
+          if (!sdgxpMapLoaded) { tryFaviconFallback(btn, icon); return; }
+          const m = btn.dataset.gameUrl.match(/(?:strongdog(\d+)\/)?html\/(.+)\/index\.html$/);
+          if (!m) { tryFaviconFallback(btn, icon); return; }
+          const version = m[1] || "";
+          const relPath = `html/${decodeURIComponent(m[2])}/index.html`;
+          const entry = sdgxpImgMap[relPath];
+          if (!entry) { tryFaviconFallback(btn, icon); return; }
+          const base = version ? `https://xpixelcoderx.github.io/strongdog${version}` : "https://xpixelcoderx.github.io";
+          const imgUrl = `${base}/img/${encodeURIComponent(entry.imgSrc)}`;
+          const img = new Image();
+          img.onload = () => { icon.style.backgroundImage = `url(${imgUrl})`; };
+          img.onerror = () => tryFaviconFallback(btn, icon);
+          img.src = imgUrl;
+        })();
+      } else {
+        tryFaviconFallback(btn, icon);
+      }
     });
 
     titleSetting.addEventListener("input", () => {
