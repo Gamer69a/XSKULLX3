@@ -432,6 +432,60 @@
       padding: 0 10px;
     }
 
+    .setting-group {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .setting-group-heading h2 {
+      margin: 0 0 4px;
+      font-size: 1.1rem;
+      letter-spacing: 0;
+    }
+
+    .setting-group-heading p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .setting-group-heading a {
+      color: var(--accent-2);
+    }
+
+    .firebase-config-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto 1fr;
+      gap: 8px;
+      align-items: center;
+      padding: 0 16px;
+    }
+
+    .firebase-config-row input {
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-2);
+      color: var(--text);
+      padding: 0 10px;
+      width: 100%;
+    }
+
+    .sync-status {
+      font-size: 0.85rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 720px) {
+      .firebase-config-row {
+        grid-template-columns: 1fr;
+        padding: 0;
+      }
+    }
+
     .launcher-panel {
       display: grid;
       gap: 14px;
@@ -665,7 +719,7 @@
             <span class="game-icon">11</span>
             <h3>Slither.io</h3>
             <p>Open slither.io in the full-page game view.</p>
-            <button class="secondary-button" type="button" data-game-title="Slither.io" data-game-url="https://slither.io">Slither.io</button>
+            <button class="secondary-button" type="button" data-game-title="Slither.io" data-game-url="http://slither.io/">Slither.io</button>
           </article>
 
           <article class="game-card">
@@ -8005,8 +8059,11 @@
           <div class="frame-notice" id="frameNotice" aria-live="polite">
             <div class="frame-notice-inner">
               <h2 id="frameNoticeTitle">This site cannot be embedded here</h2>
-              <p id="frameNoticeText">This launcher stays on the current page instead of opening another tab.</p>
-              <button class="primary-button" type="button" id="frameNoticeButton">Back to games</button>
+              <p id="frameNoticeText">This site blocks embedding. Try opening it in a new tab instead.</p>
+              <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+                <button class="primary-button" type="button" id="frameNoticeButton">Back to games</button>
+                <button class="secondary-button" type="button" id="frameNoticeNewTab">Open in new tab</button>
+              </div>
             </div>
           </div>
 
@@ -8017,6 +8074,7 @@
             src="about:blank"
             allow="fullscreen; autoplay; gamepad; pointer-lock; clipboard-read; clipboard-write; storage-access-by-user-activation"
             referrerpolicy="no-referrer"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock"
             allowfullscreen>
           </iframe>
         </div>
@@ -8073,14 +8131,47 @@
 
           <label class="setting-row">
             <span>
-              <h3>Save progress</h3>
-              <p>Remembers your last tab and game, keeps recent games loaded in the background, and saves progress even in about:blank tabs.</p>
+              <h3>Proxy mode</h3>
+              <p>Route games through a proxy to bypass iboss and other network filters. May affect game performance.</p>
             </span>
-            <select id="saveProgressSetting">
-              <option value="on">Enabled</option>
+            <select id="proxyModeSetting">
               <option value="off">Disabled</option>
+              <option value="on">Enabled</option>
             </select>
           </label>
+
+          <label class="setting-row" id="proxyUrlRow">
+            <span>
+              <h3>Proxy URL</h3>
+              <p>Proxy server template. Use <code>{url}</code> as the placeholder for the game URL.</p>
+            </span>
+            <input id="proxyUrlSetting" type="text" value="https://corsproxy.io/?url={url}">
+          </label>
+
+          <div class="setting-group">
+            <div class="setting-group-heading">
+              <h2>Cloud Sync</h2>
+              <p>Sync game saves across devices using Firebase. <a href="https://console.firebase.google.com/" target="_blank">Create a Firebase project</a> and enable Firestore, then enter your config below.</p>
+            </div>
+
+            <label class="setting-row">
+              <span>
+                <h3>Firebase sync</h3>
+                <p>Periodically upload game progress to Firebase Firestore and restore on load.</p>
+              </span>
+              <select id="firebaseSyncSetting">
+                <option value="off">Disabled</option>
+                <option value="on">Enabled</option>
+              </select>
+            </label>
+
+            <div id="firebaseConfigRow" class="firebase-config-row" hidden>
+              <input id="firebaseApiKey" type="text" placeholder="Firebase API Key (apiKey)" spellcheck="false" />
+              <input id="firebaseProjectId" type="text" placeholder="Firebase Project ID (projectId)" spellcheck="false" />
+              <button class="primary-button" type="button" id="firebaseSyncNowButton" disabled>Sync Now</button>
+              <span id="firebaseSyncStatus" class="sync-status"></span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -8155,7 +8246,15 @@
     const panicKeyLabel = document.querySelector("#panicKeyLabel");
     const gameLaunchSetting = document.querySelector("#gameLaunchSetting");
     const autoCloakSetting = document.querySelector("#autoCloakSetting");
-    const saveProgressSetting = document.querySelector("#saveProgressSetting");
+    const proxyModeSetting = document.querySelector("#proxyModeSetting");
+    const proxyUrlSetting = document.querySelector("#proxyUrlSetting");
+    const proxyUrlRow = document.querySelector("#proxyUrlRow");
+    const firebaseSyncSetting = document.querySelector("#firebaseSyncSetting");
+    const firebaseConfigRow = document.querySelector("#firebaseConfigRow");
+    const firebaseApiKey = document.querySelector("#firebaseApiKey");
+    const firebaseProjectId = document.querySelector("#firebaseProjectId");
+    const firebaseSyncNowButton = document.querySelector("#firebaseSyncNowButton");
+    const firebaseSyncStatus = document.querySelector("#firebaseSyncStatus");
     const aboutBlankButton = document.querySelector("#aboutBlankButton");
     const copySourceButton = document.querySelector("#copySourceButton");
     const quickLaunchButton = document.querySelector("#quickLaunchButton");
@@ -8171,6 +8270,7 @@
     const frameNoticeTitle = document.querySelector("#frameNoticeTitle");
     const frameNoticeText = document.querySelector("#frameNoticeText");
     const frameNoticeButton = document.querySelector("#frameNoticeButton");
+    const frameNoticeNewTab = document.querySelector("#frameNoticeNewTab");
     const frameArea = gameFrame.closest(".frame-area");
 
     let panicMode = false;
@@ -8181,8 +8281,12 @@
     let activeGameFrame = gameFrame;
     let activeFrameMode = "iframe";
     let autoCloakEnabled = false;
-    let saveProgressEnabled = true;
+    let proxyModeEnabled = false;
     let restoringSession = false;
+    let firebaseReady = false;
+    let firebaseDb = null;
+    let firebaseLoading = false;
+    let firestoreUtils = null;
     const cachedGameFrames = new Map();
     const STORAGE = {
       session: "xskullx-session-v1",
@@ -8191,7 +8295,10 @@
     };
     const IFRAME_ALLOW = "fullscreen; autoplay; gamepad; pointer-lock; clipboard-read; clipboard-write; storage-access-by-user-activation";
     const DEFAULT_STORAGE_ORIGIN = "https://gamer69a.github.io/XSKULLX/";
-    const iframeBlockedHosts = new Set([]);
+    const iframeBlockedHosts = new Set([
+      "7daystodie.com",
+      "client.eaglercraft.win"
+    ]);
 
     document.addEventListener("keydown", handleShortcut);
 
@@ -8332,17 +8439,69 @@
       saveSettings();
     });
 
-    saveProgressSetting.addEventListener("change", () => {
-      saveProgressEnabled = saveProgressSetting.value === "on";
-      saveSettings();
-      if (saveProgressEnabled) {
-        saveSession();
-      }
-    });
-
     aboutBlankButton.addEventListener("click", deployAboutBlank);
     quickLaunchButton.addEventListener("click", deployAboutBlank);
     backToGamesButton.addEventListener("click", backToGames);
+    function getProxiedUrl(url) {
+      if (!proxyModeEnabled) return url;
+      const template = (proxyUrlSetting.value || "").trim() || "https://corsproxy.io/?url={url}";
+      return template.replace(/\{url\}/g, encodeURIComponent(url));
+    }
+
+    function clearGameCaches() {
+      cachedGameFrames.forEach((frame) => {
+        if (frame !== gameFrame) frame.remove();
+      });
+      cachedGameFrames.clear();
+      gameFrame.src = "about:blank";
+    }
+
+    proxyModeSetting.addEventListener("change", () => {
+      proxyModeEnabled = proxyModeSetting.value === "on";
+      proxyUrlRow.hidden = !proxyModeEnabled;
+      if (proxyModeEnabled) clearGameCaches();
+      saveSettings();
+    });
+
+    proxyUrlSetting.addEventListener("change", () => {
+      if (proxyModeEnabled) clearGameCaches();
+      saveSettings();
+    });
+
+    async function autoInitFirebase() {
+      const ok = await loadFirebaseSDK();
+      if (ok) {
+        setTimeout(() => restoreGameBackupsFromFirebase(), 500);
+      }
+    }
+
+    firebaseSyncSetting.addEventListener("change", () => {
+      const enabled = firebaseSyncSetting.value === "on";
+      firebaseConfigRow.hidden = !enabled;
+      if (enabled) {
+        autoInitFirebase();
+      } else {
+        firebaseReady = false;
+        firebaseDb = null;
+        firebaseSyncNowButton.disabled = true;
+        setFirebaseStatus("");
+      }
+      saveSettings();
+    });
+
+    firebaseApiKey.addEventListener("change", saveSettings);
+    firebaseProjectId.addEventListener("change", saveSettings);
+
+    firebaseSyncNowButton.addEventListener("click", async () => {
+      if (!firebaseReady) {
+        await autoInitFirebase();
+      }
+      if (firebaseReady) {
+        backupAllCachedGameFrames();
+        await syncGameBackupsToFirebase();
+      }
+    });
+
     reloadGameButton.addEventListener("click", reloadGameFrame);
     proxyBackButton.addEventListener("click", () => setActiveTab("home"));
     proxyReloadButton.addEventListener("click", () => {
@@ -8350,6 +8509,9 @@
       setTimeout(() => { proxyFrame.src = "https://outerspace.tomashirsch.cl/"; }, 50);
     });
     frameNoticeButton.addEventListener("click", backToGames);
+    frameNoticeNewTab.addEventListener("click", () => {
+      if (activeGameUrl) window.open(activeGameUrl, "_blank");
+    });
 
     copySourceButton.addEventListener("click", async () => {
       await navigator.clipboard.writeText(getCleanPageSource());
@@ -8367,7 +8529,10 @@
       }
     });
     setInterval(() => {
-      backupAllSameOriginGameFrames();
+      backupAllCachedGameFrames();
+      if (activeGameUrl && activeGameFrame && !activeGameFrame.hidden) {
+        requestStorageAccessForOrigin(activeGameUrl);
+      }
     }, 30000);
 
     let storageBridgeFrame = null;
@@ -8404,6 +8569,16 @@
           if (storageBridgeReady) {
             bridgeStore("set", key, value);
           }
+        }
+      });
+
+      window.addEventListener("message", (event) => {
+        if (event.data?.source !== "xskullx-game-push-save") {
+          return;
+        }
+        const { url, data } = event.data;
+        if (url && data) {
+          persistentSet(getGameBackupKey(url), typeof data === "string" ? data : JSON.stringify(data));
         }
       });
     }
@@ -8598,8 +8773,22 @@
       autoCloakEnabled = saved.autoCloak === "on" || localStoreGet("xskullx-auto-cloak") === "on";
       autoCloakSetting.value = autoCloakEnabled ? "on" : "off";
 
-      saveProgressEnabled = saved.saveProgress !== "off";
-      saveProgressSetting.value = saveProgressEnabled ? "on" : "off";
+      proxyModeEnabled = saved.proxyMode === "on";
+      proxyModeSetting.value = proxyModeEnabled ? "on" : "off";
+      proxyUrlRow.hidden = !proxyModeEnabled;
+      if (saved.proxyUrl) {
+        proxyUrlSetting.value = saved.proxyUrl;
+      }
+
+      if (saved.firebaseSync === "on") {
+        firebaseSyncSetting.value = "on";
+        firebaseConfigRow.hidden = false;
+        if (saved.firebaseApiKey) firebaseApiKey.value = saved.firebaseApiKey;
+        if (saved.firebaseProjectId) firebaseProjectId.value = saved.firebaseProjectId;
+        autoInitFirebase();
+      } else {
+        firebaseConfigRow.hidden = true;
+      }
     }
 
     function saveSettings() {
@@ -8608,7 +8797,11 @@
         panicKey: panicKeySetting.value,
         gameLaunch: gameLaunchSetting.value,
         autoCloak: autoCloakEnabled ? "on" : "off",
-        saveProgress: saveProgressEnabled ? "on" : "off"
+        proxyMode: proxyModeEnabled ? "on" : "off",
+        proxyUrl: proxyUrlSetting.value,
+        firebaseSync: firebaseSyncSetting.value,
+        firebaseApiKey: firebaseApiKey.value.trim(),
+        firebaseProjectId: firebaseProjectId.value.trim()
       };
 
       const encoded = JSON.stringify(payload);
@@ -8666,7 +8859,7 @@
     }
 
     function saveSession() {
-      if (!saveProgressEnabled || restoringSession) {
+      if (restoringSession) {
         return;
       }
 
@@ -8705,7 +8898,11 @@
     function handlePersist() {
       saveSettings();
       saveSession();
-      backupAllSameOriginGameFrames();
+      backupAllCachedGameFrames();
+
+      if (firebaseReady && firebaseDb) {
+        syncGameBackupsToFirebase();
+      }
     }
 
     function requestPersistentStorage() {
@@ -8718,23 +8915,11 @@
       });
     }
 
-    function isSameOriginGameUrl(url) {
-      try {
-        return new URL(url, window.location.href).origin === window.location.origin;
-      } catch (error) {
-        return url.startsWith("local_games/");
-      }
-    }
-
     function getGameBackupKey(url) {
       return `${STORAGE.gameBackupPrefix}${url}`;
     }
 
     function backupGameFrameStorage(url) {
-      if (!saveProgressEnabled || !isSameOriginGameUrl(url)) {
-        return;
-      }
-
       const frame = cachedGameFrames.get(url);
       if (!frame?.contentWindow) {
         return;
@@ -8755,6 +8940,10 @@
           savedAt: Date.now(),
           items
         }));
+
+        if (firebaseReady && firebaseDb) {
+          syncGameBackupsToFirebase();
+        }
       } catch (error) {
         // Ignore cross-origin or blocked storage access.
       }
@@ -8773,10 +8962,6 @@
     }
 
     function restoreGameFrameStorage(url, frame) {
-      if (!saveProgressEnabled || !isSameOriginGameUrl(url)) {
-        return false;
-      }
-
       const backup = readJson(localStoreGet(getGameBackupKey(url)), null);
       if (!backup?.items) {
         return false;
@@ -8799,15 +8984,139 @@
       }
     }
 
-    function backupAllSameOriginGameFrames() {
+    function backupAllCachedGameFrames() {
       cachedGameFrames.forEach((frame, url) => {
         backupGameFrameStorage(url);
       });
     }
 
+    function getDeviceId() {
+      let deviceId = localStoreGet("xskullx-device-id");
+      if (!deviceId) {
+        deviceId = crypto.randomUUID ? crypto.randomUUID() : (Math.random().toString(36).slice(2) + Date.now().toString(36));
+        localStoreSet("xskullx-device-id", deviceId);
+      }
+      return deviceId;
+    }
+
+    function setFirebaseStatus(text) {
+      firebaseSyncStatus.textContent = text;
+    }
+
+    async function loadFirebaseSDK() {
+      if (firebaseReady || firebaseLoading) return firebaseReady;
+      firebaseLoading = true;
+      try {
+        const [appModule, firestoreModule] = await Promise.all([
+          import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"),
+          import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")
+        ]);
+        const apiKey = firebaseApiKey.value.trim();
+        const projectId = firebaseProjectId.value.trim();
+        if (!apiKey || !projectId) {
+          setFirebaseStatus("Config incomplete");
+          firebaseLoading = false;
+          return false;
+        }
+        const app = appModule.initializeApp({
+          apiKey,
+          projectId,
+          authDomain: `${projectId}.firebaseapp.com`
+        });
+        firebaseDb = firestoreModule.getFirestore(app);
+        firestoreUtils = {
+          doc: firestoreModule.doc,
+          setDoc: firestoreModule.setDoc,
+          getDoc: firestoreModule.getDoc,
+          serverTimestamp: firestoreModule.serverTimestamp,
+          collection: firestoreModule.collection
+        };
+        firebaseReady = true;
+        firebaseLoading = false;
+        firebaseSyncNowButton.disabled = false;
+        setFirebaseStatus("Connected");
+        return true;
+      } catch (error) {
+        firebaseLoading = false;
+        firebaseReady = false;
+        firebaseSyncNowButton.disabled = true;
+        setFirebaseStatus("Failed: " + error.message);
+        return false;
+      }
+    }
+
+    function getFirebaseBackupData() {
+      const backups = {};
+      for (let i = 0; i < localStorage.length; i += 1) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith(STORAGE.gameBackupPrefix)) {
+          backups[key] = localStorage.getItem(key);
+        }
+      }
+      return backups;
+    }
+
+    async function syncGameBackupsToFirebase() {
+      if (!firebaseReady || !firebaseDb || !firestoreUtils) return;
+      try {
+        setFirebaseStatus("Syncing...");
+        const { doc, setDoc, serverTimestamp } = firestoreUtils;
+        const deviceId = getDeviceId();
+        const docRef = doc(firebaseDb, "xskullx_saves", deviceId);
+        const backups = getFirebaseBackupData();
+        await setDoc(docRef, {
+          deviceId,
+          savedAt: serverTimestamp(),
+          backups
+        }, { merge: true });
+        setFirebaseStatus("Synced " + Object.keys(backups).length + " games");
+      } catch (error) {
+        setFirebaseStatus("Sync error: " + error.message);
+      }
+    }
+
+    async function restoreGameBackupsFromFirebase() {
+      if (!firebaseReady || !firebaseDb || !firestoreUtils) return false;
+      try {
+        setFirebaseStatus("Restoring...");
+        const { doc, getDoc } = firestoreUtils;
+        const deviceId = getDeviceId();
+        const docRef = doc(firebaseDb, "xskullx_saves", deviceId);
+        const docSnap = await getDoc(docRef);
+        if (!docSnap.exists()) {
+          setFirebaseStatus("No saves found");
+          return false;
+        }
+        const data = docSnap.data();
+        if (!data.backups || typeof data.backups !== "object") {
+          setFirebaseStatus("No backup data");
+          return false;
+        }
+        let restoredCount = 0;
+        Object.entries(data.backups).forEach(([key, value]) => {
+          if (key.startsWith(STORAGE.gameBackupPrefix)) {
+            const existing = localStoreGet(key);
+            if (!existing) {
+              localStoreSet(key, value);
+              restoredCount += 1;
+            }
+          }
+        });
+        setFirebaseStatus("Restored " + restoredCount + " backups");
+        return restoredCount > 0;
+      } catch (error) {
+        setFirebaseStatus("Restore error: " + error.message);
+        return false;
+      }
+    }
+
     function attachFramePersistence(url, frame) {
       frame.setAttribute("allow", IFRAME_ALLOW);
       frame.addEventListener("load", () => {
+        if (!isLocalGameUrl(url)) {
+          requestEmbeddedStorageAccess(frame);
+          requestStorageAccessForOrigin(url);
+        }
         restoreGameFrameStorage(url, frame);
         backupGameFrameStorage(url);
       });
@@ -8823,10 +9132,6 @@
     }
 
     function restoreSavedSession() {
-      if (!saveProgressEnabled) {
-        return;
-      }
-
       const session = loadSession();
       if (!session) {
         return;
@@ -8930,11 +9235,13 @@
     }
 
     function openGame(url, title, returnTab = "games", frameMode = "iframe") {
+      if (proxyModeEnabled && frameMode === "external") {
+        frameMode = "iframe";
+      }
       if (gameLaunchSetting.value === "blank") {
         deployAboutBlank({ gameUrl: url, gameTitle: title, frameMode });
         return;
       }
-
       openGamePage(url, title, returnTab, frameMode);
     }
 
@@ -8968,6 +9275,15 @@
       frame.hidden = false;
       requestTopLevelStorageAccess();
       requestEmbeddedStorageAccess(frame);
+
+      if (!isLocalGameUrl(url)) {
+        const tryStorageAccess = () => {
+          requestEmbeddedStorageAccess(frame);
+          requestStorageAccessForOrigin(url);
+        };
+        frame.addEventListener("load", tryStorageAccess, { once: true });
+        setTimeout(tryStorageAccess, 2000);
+      }
 
       if (isLocalGameUrl(url)) {
         const focusFrame = () => {
@@ -9006,6 +9322,19 @@
       }
     }
 
+    function requestStorageAccessForOrigin(url) {
+      try {
+        const origin = new URL(url).origin;
+        if (document.requestStorageAccessFor && origin !== window.location.origin) {
+          document.requestStorageAccessFor(origin).catch(() => {
+            // Chrome may require Permissions-Policy header; fails silently.
+          });
+        }
+      } catch (error) {
+        // Ignore.
+      }
+    }
+
     function getCachedGameFrame(url, title, options = {}) {
       if (cachedGameFrames.has(url)) {
         const cachedFrame = cachedGameFrames.get(url);
@@ -9023,7 +9352,7 @@
       }
       frame.title = title;
       attachFramePersistence(url, frame);
-      frame.src = url;
+      frame.src = getProxiedUrl(url);
 
       if (frame !== gameFrame) {
         frameArea.appendChild(frame);
@@ -9135,6 +9464,7 @@
 
     function createGameFramePage(gameUrl, gameTitle = "Game", frameMode = "iframe") {
       const externalNotice = frameMode === "external";
+      const proxiedUrl = getProxiedUrl(gameUrl);
 
       return `
         <!DOCTYPE html>
@@ -9249,19 +9579,20 @@
           <iframe
             id="gameFrame"
             title="${escapeHtml(gameTitle)}"
-            src="${externalNotice ? "about:blank" : escapeAttribute(gameUrl)}"
+            src="${externalNotice ? "about:blank" : escapeAttribute(proxiedUrl)}"
             allow="${IFRAME_ALLOW}"
             referrerpolicy="no-referrer"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock"
             allowfullscreen>
           </iframe>
           <div class="notice">
             <div class="notice-inner">
               <strong>${escapeHtml(gameTitle)} cannot be embedded here</strong>
-              <p>This launcher stays on the current page instead of opening another tab.</p>
+              <p>This site blocks embedding. Try opening it in a new tab instead.</p>
             </div>
           </div>
           <script>
-            const gameUrl = ${JSON.stringify(gameUrl)};
+            const gameUrl = ${JSON.stringify(proxiedUrl)};
 
             function reloadGame() {
               const frame = document.querySelector("#gameFrame");
