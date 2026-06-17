@@ -107,6 +107,12 @@
       color: #dffdf3;
     }
 
+    .tab-button.search-icon-btn {
+      font-size: 22px;
+      padding: 0 10px;
+      line-height: 1;
+    }
+
     .primary-button {
       border-color: #2f7d66;
       background: var(--accent);
@@ -421,6 +427,36 @@
       line-height: 1.45;
     }
 
+    #searchInput:focus {
+      border-color: var(--accent);
+    }
+
+    .search-result-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      background: var(--panel);
+      transition: border-color 0.12s;
+      cursor: pointer;
+    }
+
+    .search-result-item:hover {
+      border-color: var(--accent);
+    }
+
+    .search-result-item .result-name {
+      font-weight: 600;
+    }
+
+    .search-result-item .result-tab {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
     .setting-row input,
     .setting-row select {
       min-height: 40px;
@@ -628,8 +664,11 @@
         <button class="tab-button" type="button" data-tab="proxy" aria-selected="false">Proxy</button>
         <button class="tab-button" type="button" data-tab="apps" aria-selected="false">Apps</button>
         <button class="tab-button" type="button" data-tab="strongdogxp" aria-selected="false">StrongDogXP</button>
+        <button class="tab-button" type="button" data-tab="books" aria-selected="false">Books</button>
         <button class="tab-button" type="button" data-tab="deploy" aria-selected="false">About Blank</button>
         <button class="tab-button" type="button" data-tab="settings" aria-selected="false">Settings</button>
+        <button class="tab-button" type="button" data-tab="progress" aria-selected="false">Progress</button>
+        <button class="tab-button search-icon-btn" type="button" data-tab="search" aria-selected="false" aria-label="Search">⌕</button>
       </nav>
 
       <button class="primary-button" type="button" id="quickLaunchButton">Launch</button>
@@ -8042,6 +8081,160 @@
         </div>
       </section>
 
+      <section class="view" id="books" data-view>
+        <div class="page-heading">
+          <h2>Books</h2>
+          <p>Read books online.</p>
+        </div>
+
+        <div class="game-grid">
+          <article class="game-card" style="cursor:pointer" onclick="setActiveTab('books-dw')">
+            <span class="game-icon" style="font-size:28px">B</span>
+            <h3>Diary of a Wimpy Kid</h3>
+            <p>All 18+ books in the series.</p>
+            <button class="secondary-button" type="button">Browse</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="books-dw" data-view>
+        <header class="game-page-header">
+          <div class="game-page-left">
+            <button class="icon-button" type="button" onclick="setActiveTab('books')" aria-label="Back">←</button>
+            <span class="brand-mark">X</span>
+            <strong class="game-page-title">Diary of a Wimpy Kid</strong>
+          </div>
+        </header>
+        <div class="game-grid" style="padding:16px">
+          <article class="game-card">
+            <span class="game-icon">1</span>
+            <h3>Greg Heffley's Journal</h3>
+            <p>Book 1 (2007)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 1" data-game-url="https://archive.org/stream/diaryofawimpykidbook01?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">2</span>
+            <h3>Rodrick Rules</h3>
+            <p>Book 2 (2008)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 2" data-game-url="https://archive.org/stream/diary-of-a-wimpy-kid-book-2-rodrick-rules_202306?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">3</span>
+            <h3>The Last Straw</h3>
+            <p>Book 3 (2009)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 3" data-game-url="https://archive.org/stream/diaryofwimpykidc00kinn?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">4</span>
+            <h3>Dog Days</h3>
+            <p>Book 4 (2009)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 4" data-game-url="https://archive.org/stream/dogdaysdiaryofwi0000jeff?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">5</span>
+            <h3>The Ugly Truth</h3>
+            <p>Book 5 (2010)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 5" data-game-url="https://archive.org/stream/diaryofwimpykid400kinn?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">6</span>
+            <h3>Cabin Fever</h3>
+            <p>Book 6 (2011)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 6" data-game-url="https://archive.org/stream/diaryofwimpykidc0000kinn_c1k6?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">7</span>
+            <h3>The Third Wheel</h3>
+            <p>Book 7 (2012)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 7" data-game-url="https://archive.org/stream/diaryofwimpykidg0000kinn_s7x1?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">8</span>
+            <h3>Hard Luck</h3>
+            <p>Book 8 (2013)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 8" data-game-url="https://archive.org/stream/diaryofwimpykidg0000kinn?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">9</span>
+            <h3>The Long Haul</h3>
+            <p>Book 9 (2014)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 9" data-game-url="https://archive.org/stream/diaryofwimpykido0000kinn?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">10</span>
+            <h3>Old School</h3>
+            <p>Book 10 (2015)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 10" data-game-url="https://archive.org/stream/diaryofwimpykido0000kinn_h1s1?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">11</span>
+            <h3>Double Down</h3>
+            <p>Book 11 (2016)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 11" data-game-url="https://archive.org/stream/diaryofwimpykido0000kinn?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">12</span>
+            <h3>The Getaway</h3>
+            <p>Book 12 (2017)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 12" data-game-url="https://archive.org/stream/diaryofwimpyr0000kinn?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">13</span>
+            <h3>The Meltdown</h3>
+            <p>Book 13 (2018)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 13" data-game-url="https://archive.org/stream/diaryofwimpykidd0000kinn_e9d2?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">14</span>
+            <h3>Wrecking Ball</h3>
+            <p>Book 14 (2019)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 14" data-game-url="https://archive.org/stream/diaryofwimpykido0000kinn?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">15</span>
+            <h3>The Deep End</h3>
+            <p>Book 15 (2020)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 15" data-game-url="https://archive.org/stream/diaryof-wimpykidbook-15?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">16</span>
+            <h3>Big Shot</h3>
+            <p>Book 16 (2021)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 16" data-game-url="https://archive.org/stream/diaryofwimpykidg0000kinn_s5c2?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">17</span>
+            <h3>Diper Överlöde</h3>
+            <p>Book 17 (2022)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 17" data-game-url="https://archive.org/stream/diaryofwimpykidr0000kinn_v1v0?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">18</span>
+            <h3>No Brainer</h3>
+            <p>Book 18 (2023)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 18" data-game-url="https://archive.org/stream/diaryofwimpykidg0000kinn_s5c2?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">19</span>
+            <h3>Hot Mess</h3>
+            <p>Book 19 (2024)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 19" data-game-url="https://archive.org/stream/diary-of-a-wimpy-kid-hot-mess?ui=embed#">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">20</span>
+            <h3>Partypooper</h3>
+            <p>Book 20 (2025)</p>
+            <button class="secondary-button" type="button" data-return-tab="books-dw" data-game-title="Diary of a Wimpy Kid 20" data-game-url="https://www.jellybooks.com/cloud_reader/excerpts/diary-of-a-wimpy-kid-partypooper-book-20_9780241745182-ex/54w4Q">Read</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">21</span>
+            <h3>Fight or Flight</h3>
+            <p>Book 21 (2026) — not yet available</p>
+            <button class="secondary-button" type="button" disabled style="opacity:0.4">Read</button>
+          </article>
+        </div>
+      </section>
+
       <section class="view game-page" id="gamePage" data-view aria-label="Game page">
         <header class="game-page-header">
           <div class="game-page-left">
@@ -8078,6 +8271,55 @@
             allowfullscreen>
           </iframe>
         </div>
+      </section>
+
+      <section class="view" id="progress" data-view>
+        <div class="page-heading">
+          <h2>Progress</h2>
+          <p>Sync your game progress across devices with Firebase.</p>
+        </div>
+
+        <div class="setting-list">
+          <div class="setting-group">
+            <div class="setting-group-heading">
+              <h3>Account</h3>
+              <p>Create an account or log in to sync your saves across devices.</p>
+            </div>
+
+            <div class="firebase-config-row" style="padding:0 16px">
+              <input id="firebaseUsername" type="text" placeholder="Username" spellcheck="false" autocomplete="off" />
+              <input id="firebasePassword" type="password" placeholder="Password" spellcheck="false" autocomplete="off" />
+            </div>
+
+            <div style="display:flex;gap:8px;padding:12px 16px">
+              <button class="primary-button" type="button" id="firebaseSignUpButton">Sign Up</button>
+              <button class="secondary-button" type="button" id="firebaseLogInButton">Log In</button>
+              <button class="secondary-button" type="button" id="firebaseLogOutButton" hidden>Log Out</button>
+              <span id="firebaseSyncStatus" class="sync-status" style="align-self:center"></span>
+            </div>
+          </div>
+
+          <div class="setting-group" id="progressConnectedSection" hidden>
+            <div class="setting-group-heading">
+              <h3>Sync</h3>
+              <p id="progressAccountLabel">Logged in</p>
+            </div>
+            <div style="display:flex;gap:8px;padding:0 16px">
+              <button class="primary-button" type="button" id="firebaseSyncNowButton">Sync Now</button>
+              <span id="firebaseSyncDetail" class="sync-status" style="align-self:center"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="search" data-view>
+        <div class="page-heading">
+          <h2>Search</h2>
+        </div>
+        <div style="padding:0 16px 16px">
+          <input id="searchInput" type="text" placeholder="Search games..." autofocus style="width:100%;padding:10px 14px;font-size:16px;border:1px solid #333;border-radius:8px;background:#1a1a1a;color:#eee;outline:none">
+        </div>
+        <div id="searchResults" style="padding:0 16px"></div>
       </section>
 
       <section class="view" id="settings" data-view>
@@ -8132,46 +8374,13 @@
           <label class="setting-row">
             <span>
               <h3>Proxy mode</h3>
-              <p>Route games through a proxy to bypass iboss and other network filters. May affect game performance.</p>
+              <p>Route games through corsproxy.io to bypass iboss and other network filters.</p>
             </span>
             <select id="proxyModeSetting">
               <option value="off">Disabled</option>
               <option value="on">Enabled</option>
             </select>
           </label>
-
-          <label class="setting-row" id="proxyUrlRow">
-            <span>
-              <h3>Proxy URL</h3>
-              <p>Proxy server template. Use <code>{url}</code> as the placeholder for the game URL.</p>
-            </span>
-            <input id="proxyUrlSetting" type="text" value="https://corsproxy.io/?url={url}">
-          </label>
-
-          <div class="setting-group">
-            <div class="setting-group-heading">
-              <h2>Cloud Sync</h2>
-              <p>Sync game saves across devices using Firebase. <a href="https://console.firebase.google.com/" target="_blank">Create a Firebase project</a> and enable Firestore, then enter your config below.</p>
-            </div>
-
-            <label class="setting-row">
-              <span>
-                <h3>Firebase sync</h3>
-                <p>Periodically upload game progress to Firebase Firestore and restore on load.</p>
-              </span>
-              <select id="firebaseSyncSetting">
-                <option value="off">Disabled</option>
-                <option value="on">Enabled</option>
-              </select>
-            </label>
-
-            <div id="firebaseConfigRow" class="firebase-config-row" hidden>
-              <input id="firebaseApiKey" type="text" placeholder="Firebase API Key (apiKey)" spellcheck="false" />
-              <input id="firebaseProjectId" type="text" placeholder="Firebase Project ID (projectId)" spellcheck="false" />
-              <button class="primary-button" type="button" id="firebaseSyncNowButton" disabled>Sync Now</button>
-              <span id="firebaseSyncStatus" class="sync-status"></span>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -8247,14 +8456,16 @@
     const gameLaunchSetting = document.querySelector("#gameLaunchSetting");
     const autoCloakSetting = document.querySelector("#autoCloakSetting");
     const proxyModeSetting = document.querySelector("#proxyModeSetting");
-    const proxyUrlSetting = document.querySelector("#proxyUrlSetting");
-    const proxyUrlRow = document.querySelector("#proxyUrlRow");
-    const firebaseSyncSetting = document.querySelector("#firebaseSyncSetting");
-    const firebaseConfigRow = document.querySelector("#firebaseConfigRow");
-    const firebaseApiKey = document.querySelector("#firebaseApiKey");
-    const firebaseProjectId = document.querySelector("#firebaseProjectId");
+    const firebaseUsername = document.querySelector("#firebaseUsername");
+    const firebasePassword = document.querySelector("#firebasePassword");
+    const firebaseSignUpButton = document.querySelector("#firebaseSignUpButton");
+    const firebaseLogInButton = document.querySelector("#firebaseLogInButton");
+    const firebaseLogOutButton = document.querySelector("#firebaseLogOutButton");
     const firebaseSyncNowButton = document.querySelector("#firebaseSyncNowButton");
     const firebaseSyncStatus = document.querySelector("#firebaseSyncStatus");
+    const firebaseSyncDetail = document.querySelector("#firebaseSyncDetail");
+    const progressConnectedSection = document.querySelector("#progressConnectedSection");
+    const progressAccountLabel = document.querySelector("#progressAccountLabel");
     const aboutBlankButton = document.querySelector("#aboutBlankButton");
     const copySourceButton = document.querySelector("#copySourceButton");
     const quickLaunchButton = document.querySelector("#quickLaunchButton");
@@ -8296,8 +8507,7 @@
     const IFRAME_ALLOW = "fullscreen; autoplay; gamepad; pointer-lock; clipboard-read; clipboard-write; storage-access-by-user-activation";
     const DEFAULT_STORAGE_ORIGIN = "https://gamer69a.github.io/XSKULLX/";
     const iframeBlockedHosts = new Set([
-      "7daystodie.com",
-      "client.eaglercraft.win"
+      "7daystodie.com"
     ]);
 
     document.addEventListener("keydown", handleShortcut);
@@ -8444,62 +8654,154 @@
     backToGamesButton.addEventListener("click", backToGames);
     function getProxiedUrl(url) {
       if (!proxyModeEnabled) return url;
-      const template = (proxyUrlSetting.value || "").trim() || "https://corsproxy.io/?url={url}";
-      return template.replace(/\{url\}/g, encodeURIComponent(url));
-    }
-
-    function clearGameCaches() {
-      cachedGameFrames.forEach((frame) => {
-        if (frame !== gameFrame) frame.remove();
-      });
-      cachedGameFrames.clear();
-      gameFrame.src = "about:blank";
+      return "https://corsproxy.io/?url=" + encodeURIComponent(url);
     }
 
     proxyModeSetting.addEventListener("change", () => {
       proxyModeEnabled = proxyModeSetting.value === "on";
-      proxyUrlRow.hidden = !proxyModeEnabled;
-      if (proxyModeEnabled) clearGameCaches();
       saveSettings();
     });
 
-    proxyUrlSetting.addEventListener("change", () => {
-      if (proxyModeEnabled) clearGameCaches();
-      saveSettings();
+    const searchInput = document.querySelector("#searchInput");
+    const searchResults = document.querySelector("#searchResults");
+    const allGames = [];
+
+    document.querySelectorAll("[data-game-url]").forEach((btn) => {
+      allGames.push({
+        title: btn.dataset.gameTitle || "Untitled",
+        url: btn.dataset.gameUrl,
+        returnTab: btn.dataset.returnTab || "games"
+      });
+    });
+
+    searchInput.addEventListener("input", () => {
+      const q = searchInput.value.trim().toLowerCase();
+      if (!q) {
+        searchResults.innerHTML = "";
+        return;
+      }
+      const matches = allGames.filter((g) => g.title.toLowerCase().includes(q));
+      searchResults.innerHTML = matches
+        .map(
+          (g) =>
+            `<div class="search-result-item" data-url="${g.url}" data-title="${g.title}" data-returntab="${g.returnTab}">
+              <span class="result-name">${g.title}</span>
+              <span class="result-tab">${g.returnTab}</span>
+            </div>`
+        )
+        .join("");
+
+      searchResults.querySelectorAll(".search-result-item").forEach((el) => {
+        el.addEventListener("click", () => {
+          openGame(el.dataset.url, el.dataset.title, el.dataset.returntab);
+        });
+      });
     });
 
     async function autoInitFirebase() {
+      if (firebaseReady) return true;
       const ok = await loadFirebaseSDK();
       if (ok) {
         setTimeout(() => restoreGameBackupsFromFirebase(), 500);
       }
+      return ok;
     }
 
-    firebaseSyncSetting.addEventListener("change", () => {
-      const enabled = firebaseSyncSetting.value === "on";
-      firebaseConfigRow.hidden = !enabled;
-      if (enabled) {
-        autoInitFirebase();
-      } else {
-        firebaseReady = false;
-        firebaseDb = null;
-        firebaseSyncNowButton.disabled = true;
-        setFirebaseStatus("");
+    function showConnectedUI(username) {
+      progressConnectedSection.hidden = false;
+      progressAccountLabel.textContent = "Logged in as " + username;
+      firebaseSignUpButton.hidden = true;
+      firebaseLogInButton.hidden = true;
+      firebaseLogOutButton.hidden = false;
+      firebaseUsername.disabled = true;
+      firebasePassword.disabled = true;
+      firebaseApiKey.disabled = true;
+      firebaseProjectId.disabled = true;
+      setFirebaseStatus("Connected");
+    }
+
+    function showDisconnectedUI() {
+      progressConnectedSection.hidden = true;
+      firebaseSignUpButton.hidden = false;
+      firebaseLogInButton.hidden = false;
+      firebaseLogOutButton.hidden = true;
+      firebaseUsername.disabled = false;
+      firebasePassword.disabled = false;
+      firebaseReady = false;
+      firebaseDb = null;
+      firestoreUtils = null;
+      firebaseSyncNowButton.disabled = true;
+      setFirebaseStatus("");
+      localStoreSet("xskullx-firebase-logged-in", "");
+    }
+
+    firebaseUsername.addEventListener("change", saveSettings);
+    firebasePassword.addEventListener("change", saveSettings);
+
+    firebaseSignUpButton.addEventListener("click", async () => {
+      const ok = await autoInitFirebase();
+      if (!ok) return;
+      const username = firebaseUsername.value.trim();
+      const password = firebasePassword.value;
+      if (!username || !password) { setFirebaseStatus("Enter username + password"); return; }
+      const { doc, getDoc, setDoc, serverTimestamp } = firestoreUtils;
+      const docRef = doc(firebaseDb, "xskullx_saves", username);
+      const existing = await getDoc(docRef);
+      if (existing.exists()) {
+        setFirebaseStatus("Username taken");
+        return;
       }
+      const passwordHash = await hashPassword(password);
+      await setDoc(docRef, {
+        username,
+        passwordHash,
+        deviceId: getDeviceId(),
+        savedAt: serverTimestamp(),
+        backups: {}
+      });
+      saveSettings();
+      showConnectedUI(username);
+      setFirebaseStatus("Account created");
+    });
+
+    firebaseLogInButton.addEventListener("click", async () => {
+      const ok = await autoInitFirebase();
+      if (!ok) return;
+      const username = firebaseUsername.value.trim();
+      const password = firebasePassword.value;
+      if (!username || !password) { setFirebaseStatus("Enter username + password"); return; }
+      const { doc, getDoc } = firestoreUtils;
+      const docRef = doc(firebaseDb, "xskullx_saves", username);
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists()) {
+        setFirebaseStatus("Account not found");
+        return;
+      }
+      const storedHash = docSnap.data().passwordHash;
+      const inputHash = await hashPassword(password);
+      if (storedHash !== inputHash) {
+        setFirebaseStatus("Wrong password");
+        return;
+      }
+      saveSettings();
+      showConnectedUI(username);
+      setFirebaseStatus("Logged in");
+      setTimeout(() => restoreGameBackupsFromFirebase(), 500);
+    });
+
+    firebaseLogOutButton.addEventListener("click", () => {
+      localStoreGet("xskullx-device-id");
+      showDisconnectedUI();
       saveSettings();
     });
 
-    firebaseApiKey.addEventListener("change", saveSettings);
-    firebaseProjectId.addEventListener("change", saveSettings);
-
     firebaseSyncNowButton.addEventListener("click", async () => {
-      if (!firebaseReady) {
-        await autoInitFirebase();
-      }
-      if (firebaseReady) {
-        backupAllCachedGameFrames();
-        await syncGameBackupsToFirebase();
-      }
+      if (!firebaseReady) return;
+      backupAllCachedGameFrames();
+      await syncGameBackupsToFirebase();
+      setFirebaseStatus("Synced");
+      firebaseSyncDetail.textContent = "All changes saved";
+      setTimeout(() => { firebaseSyncDetail.textContent = ""; }, 3000);
     });
 
     reloadGameButton.addEventListener("click", reloadGameFrame);
@@ -8528,12 +8830,23 @@
         handlePersist();
       }
     });
+    let autoRestoreInterval = null;
+
     setInterval(() => {
       backupAllCachedGameFrames();
       if (activeGameUrl && activeGameFrame && !activeGameFrame.hidden) {
         requestStorageAccessForOrigin(activeGameUrl);
       }
-    }, 30000);
+      if (firebaseReady && firebaseDb) {
+        syncGameBackupsToFirebase();
+      }
+    }, 10000);
+
+    setInterval(() => {
+      if (firebaseReady && firebaseDb) {
+        restoreGameBackupsFromFirebase();
+      }
+    }, 120000);
 
     let storageBridgeFrame = null;
     let storageBridgeReady = false;
@@ -8775,19 +9088,21 @@
 
       proxyModeEnabled = saved.proxyMode === "on";
       proxyModeSetting.value = proxyModeEnabled ? "on" : "off";
-      proxyUrlRow.hidden = !proxyModeEnabled;
-      if (saved.proxyUrl) {
-        proxyUrlSetting.value = saved.proxyUrl;
+
+      if (!localStoreGet("xskullx-firebase-config")) {
+        const oldApiKey = saved.firebaseApiKey;
+        const oldProjectId = saved.firebaseProjectId;
+        if (oldApiKey && oldProjectId) {
+          localStoreSet("xskullx-firebase-config", JSON.stringify({ apiKey: oldApiKey, projectId: oldProjectId }));
+        }
       }
 
-      if (saved.firebaseSync === "on") {
-        firebaseSyncSetting.value = "on";
-        firebaseConfigRow.hidden = false;
-        if (saved.firebaseApiKey) firebaseApiKey.value = saved.firebaseApiKey;
-        if (saved.firebaseProjectId) firebaseProjectId.value = saved.firebaseProjectId;
-        autoInitFirebase();
-      } else {
-        firebaseConfigRow.hidden = true;
+      if (saved.firebaseUsername && saved.firebasePassword) {
+        firebaseUsername.value = saved.firebaseUsername;
+        firebasePassword.value = saved.firebasePassword;
+        autoInitFirebase().then((ok) => {
+          if (ok) showConnectedUI(saved.firebaseUsername);
+        });
       }
     }
 
@@ -8798,10 +9113,8 @@
         gameLaunch: gameLaunchSetting.value,
         autoCloak: autoCloakEnabled ? "on" : "off",
         proxyMode: proxyModeEnabled ? "on" : "off",
-        proxyUrl: proxyUrlSetting.value,
-        firebaseSync: firebaseSyncSetting.value,
-        firebaseApiKey: firebaseApiKey.value.trim(),
-        firebaseProjectId: firebaseProjectId.value.trim()
+        firebaseUsername: firebaseUsername.value.trim(),
+        firebasePassword: firebasePassword.value
       };
 
       const encoded = JSON.stringify(payload);
@@ -8999,6 +9312,14 @@
       return deviceId;
     }
 
+    async function hashPassword(password) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(password);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+    }
+
     function setFirebaseStatus(text) {
       firebaseSyncStatus.textContent = text;
     }
@@ -9011,10 +9332,18 @@
           import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"),
           import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")
         ]);
-        const apiKey = firebaseApiKey.value.trim();
-        const projectId = firebaseProjectId.value.trim();
+        const savedConfig = readJson(localStoreGet("xskullx-firebase-config"), null);
+        const apiKey = savedConfig?.apiKey || "";
+        const projectId = savedConfig?.projectId || "";
         if (!apiKey || !projectId) {
-          setFirebaseStatus("Config incomplete");
+          setFirebaseStatus("Firebase not configured");
+          firebaseLoading = false;
+          return false;
+        }
+        const username = firebaseUsername.value.trim();
+        const password = firebasePassword.value;
+        if (!username || !password) {
+          setFirebaseStatus("Enter username + password");
           firebaseLoading = false;
           return false;
         }
@@ -9029,7 +9358,10 @@
           setDoc: firestoreModule.setDoc,
           getDoc: firestoreModule.getDoc,
           serverTimestamp: firestoreModule.serverTimestamp,
-          collection: firestoreModule.collection
+          collection: firestoreModule.collection,
+          getDocs: firestoreModule.getDocs,
+          query: firestoreModule.query,
+          where: firestoreModule.where
         };
         firebaseReady = true;
         firebaseLoading = false;
@@ -9059,53 +9391,82 @@
     async function syncGameBackupsToFirebase() {
       if (!firebaseReady || !firebaseDb || !firestoreUtils) return;
       try {
-        setFirebaseStatus("Syncing...");
-        const { doc, setDoc, serverTimestamp } = firestoreUtils;
-        const deviceId = getDeviceId();
-        const docRef = doc(firebaseDb, "xskullx_saves", deviceId);
+        const { doc, getDoc, setDoc, serverTimestamp } = firestoreUtils;
+        const username = firebaseUsername.value.trim();
+        const password = firebasePassword.value;
+        const docRef = doc(firebaseDb, "xskullx_saves", username);
+        const existingDoc = await getDoc(docRef);
+        if (existingDoc.exists()) {
+          const storedHash = existingDoc.data().passwordHash;
+          const inputHash = await hashPassword(password);
+          if (storedHash !== inputHash) {
+            return;
+          }
+        }
+        const passwordHash = await hashPassword(password);
         const backups = getFirebaseBackupData();
         await setDoc(docRef, {
-          deviceId,
+          username,
+          passwordHash,
+          deviceId: getDeviceId(),
           savedAt: serverTimestamp(),
           backups
         }, { merge: true });
-        setFirebaseStatus("Synced " + Object.keys(backups).length + " games");
+        firebaseSyncDetail.textContent = "Saved " + Object.keys(backups).length + " games";
       } catch (error) {
-        setFirebaseStatus("Sync error: " + error.message);
+        firebaseSyncDetail.textContent = "Sync error";
       }
     }
 
     async function restoreGameBackupsFromFirebase() {
       if (!firebaseReady || !firebaseDb || !firestoreUtils) return false;
       try {
-        setFirebaseStatus("Restoring...");
         const { doc, getDoc } = firestoreUtils;
-        const deviceId = getDeviceId();
-        const docRef = doc(firebaseDb, "xskullx_saves", deviceId);
+        const username = firebaseUsername.value.trim();
+        const password = firebasePassword.value;
+        if (!username || !password) {
+          return false;
+        }
+        const docRef = doc(firebaseDb, "xskullx_saves", username);
         const docSnap = await getDoc(docRef);
         if (!docSnap.exists()) {
-          setFirebaseStatus("No saves found");
+          return false;
+        }
+        const storedHash = docSnap.data().passwordHash;
+        const inputHash = await hashPassword(password);
+        if (storedHash !== inputHash) {
           return false;
         }
         const data = docSnap.data();
         if (!data.backups || typeof data.backups !== "object") {
-          setFirebaseStatus("No backup data");
+          firebaseSyncDetail.textContent = "No saved games yet";
           return false;
         }
         let restoredCount = 0;
         Object.entries(data.backups).forEach(([key, value]) => {
           if (key.startsWith(STORAGE.gameBackupPrefix)) {
             const existing = localStoreGet(key);
+            let parsed;
+            try { parsed = JSON.parse(value); } catch { parsed = null; }
             if (!existing) {
               localStoreSet(key, value);
               restoredCount += 1;
+            } else if (parsed?.savedAt) {
+              try {
+                const existingParsed = JSON.parse(existing);
+                if (existingParsed?.savedAt && parsed.savedAt > existingParsed.savedAt) {
+                  localStoreSet(key, value);
+                  restoredCount += 1;
+                }
+              } catch { /* keep existing */ }
             }
           }
         });
-        setFirebaseStatus("Restored " + restoredCount + " backups");
+        if (restoredCount > 0) {
+          firebaseSyncDetail.textContent = "Restored " + restoredCount + " saves";
+        }
         return restoredCount > 0;
       } catch (error) {
-        setFirebaseStatus("Restore error: " + error.message);
         return false;
       }
     }
@@ -9188,6 +9549,10 @@
       views.forEach((view) => {
         view.classList.toggle("active", view.id === tabId);
       });
+
+      if (tabId === "search") {
+        setTimeout(() => searchInput.focus(), 50);
+      }
 
       if (!options.skipSave) {
         saveSession();
