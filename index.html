@@ -493,7 +493,7 @@
 
     .firebase-config-row {
       display: grid;
-      grid-template-columns: 1fr 1fr auto 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 8px;
       align-items: center;
       padding: 0 16px;
@@ -8715,8 +8715,6 @@
       firebaseLogOutButton.hidden = false;
       firebaseUsername.disabled = true;
       firebasePassword.disabled = true;
-      firebaseApiKey.disabled = true;
-      firebaseProjectId.disabled = true;
       setFirebaseStatus("Connected");
     }
 
@@ -9089,14 +9087,6 @@
       proxyModeEnabled = saved.proxyMode === "on";
       proxyModeSetting.value = proxyModeEnabled ? "on" : "off";
 
-      if (!localStoreGet("xskullx-firebase-config")) {
-        const oldApiKey = saved.firebaseApiKey;
-        const oldProjectId = saved.firebaseProjectId;
-        if (oldApiKey && oldProjectId) {
-          localStoreSet("xskullx-firebase-config", JSON.stringify({ apiKey: oldApiKey, projectId: oldProjectId }));
-        }
-      }
-
       if (saved.firebaseUsername && saved.firebasePassword) {
         firebaseUsername.value = saved.firebaseUsername;
         firebasePassword.value = saved.firebasePassword;
@@ -9333,8 +9323,8 @@
           import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")
         ]);
         const savedConfig = readJson(localStoreGet("xskullx-firebase-config"), null);
-        const apiKey = savedConfig?.apiKey || "";
-        const projectId = savedConfig?.projectId || "";
+        const apiKey = savedConfig?.apiKey || "AIzaSyB9eAIt75qFnBW0OTK_zPvoeAq4miqLYs4";
+        const projectId = savedConfig?.projectId || "xskullx";
         if (!apiKey || !projectId) {
           setFirebaseStatus("Firebase not configured");
           firebaseLoading = false;
@@ -9363,6 +9353,9 @@
           query: firestoreModule.query,
           where: firestoreModule.where
         };
+        if (!localStoreGet("xskullx-firebase-config")) {
+          localStoreSet("xskullx-firebase-config", JSON.stringify({ apiKey, projectId }));
+        }
         firebaseReady = true;
         firebaseLoading = false;
         firebaseSyncNowButton.disabled = false;
