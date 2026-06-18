@@ -8382,17 +8382,14 @@
             </span>
             <select id="proxyModeSetting">
               <option value="off">Disabled</option>
-              <option value="corsproxy">corsproxy.io</option>
-              <option value="corssh">cors.sh</option>
-              <option value="corsfix">corsfix.com</option>
-              <option value="corslol">cors.lol</option>
-              <option value="allorigins">allorigins.win</option>
-              <option value="htmldriven">cors-proxy.htmldriven.com</option>
-              <option value="thingproxy">thingproxy.freeboard.io</option>
-              <option value="whateverorigin">whateverorigin.org</option>
-              <option value="cfworkers">test.cors.workers.dev</option>
-              <option value="alloworigin">alloworigin.com</option>
-              <option value="gobetween">gobetween.oklabs.org</option>
+              <option value="proxyscotch">proxy.hoppscotch.io</option>
+              <option value="yacdn">yacdn.org</option>
+              <option value="codetabs">api.codetabs.com</option>
+              <option value="corsio">cors.io</option>
+              <option value="corsanywhere">cors-anywhere.herokuapp.com</option>
+              <option value="corsify">corsify (self-hosted)</option>
+              <option value="simple-cors-proxy">simple-cors-proxy (self-hosted)</option>
+              <option value="corsfix-selfhosted">corsfix (self-hosted)</option>
             </select>
           </label>
         </div>
@@ -8667,17 +8664,14 @@
     backToGamesButton.addEventListener("click", backToGames);
     function getProxiedUrl(url) {
       const proxy = proxyModeSetting.value;
-      if (proxy === "corsproxy") return "https://corsproxy.io/?url=" + encodeURIComponent(url);
-      if (proxy === "corssh") return "https://proxy.cors.sh/" + encodeURIComponent(url);
-      if (proxy === "corsfix") return "https://corsfix.com/?url=" + encodeURIComponent(url);
-      if (proxy === "corslol") return "https://cors.lol/?url=" + encodeURIComponent(url);
-      if (proxy === "allorigins") return "https://api.allorigins.win/raw?url=" + encodeURIComponent(url);
-      if (proxy === "htmldriven") return "https://cors-proxy.htmldriven.com/?url=" + encodeURIComponent(url);
-      if (proxy === "thingproxy") return "https://thingproxy.freeboard.io/fetch/" + encodeURIComponent(url);
-      if (proxy === "whateverorigin") return "https://whateverorigin.org/get?url=" + encodeURIComponent(url);
-      if (proxy === "cfworkers") return "https://test.cors.workers.dev/?" + encodeURIComponent(url);
-      if (proxy === "alloworigin") return "http://alloworigin.com/get?url=" + encodeURIComponent(url);
-      if (proxy === "gobetween") return "https://gobetween.oklabs.org/pipe/" + encodeURIComponent(url);
+      if (proxy === "proxyscotch") return "https://proxy.hoppscotch.io/?" + encodeURIComponent(url);
+      if (proxy === "yacdn") return "https://yacdn.org/proxy/" + encodeURIComponent(url);
+      if (proxy === "codetabs") return "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(url);
+      if (proxy === "corsio") return "https://cors.io/?" + encodeURIComponent(url);
+      if (proxy === "corsanywhere") return "https://cors-anywhere.herokuapp.com/" + encodeURIComponent(url);
+      if (proxy === "corsify") return "http://localhost:3000/?url=" + encodeURIComponent(url);
+      if (proxy === "simple-cors-proxy") return "http://localhost:8080/proxy/" + encodeURIComponent(url);
+      if (proxy === "corsfix-selfhosted") return "http://localhost:4000/?url=" + encodeURIComponent(url);
       return url;
     }
 

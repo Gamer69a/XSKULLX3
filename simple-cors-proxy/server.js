@@ -1,0 +1,79 @@
+var http = require("http");
+var https = require("https");
+var url = require("url");
+
+var PORT = process.env.PORT || 8080;
+
+function addCorsHeaders(res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "*");
+}
+
+var server = http.createServer(function (req, res) {
+  addCorsHeaders(res);
+
+  if (req.method === "OPTIONS") {
+    res.statusCode = 200;
+    res.end();
+    return;
+  }
+
+  var pathname = url.parse(req.url).pathname;
+
+  if (pathname.indexOf("/proxy/") !== 0) {
+    res.statusCode = 400;
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify({ error: "Use /proxy/<url>" }));
+    return;
+  }
+
+  var target = decodeURIComponent(pathname.slice("/proxy/".length));
+
+  if (!target) {
+    res.statusCode = 400;
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify({ error: "Missing URL in path" }));
+    return;
+  }
+
+  var isHttps = target.indexOf("https://") === 0;
+  var transport = isHttps ? https : http;
+
+  var options = url.parse(target);
+  options.method = req.method;
+  options.headers = {};
+  options.rejectUnauthorized = false;
+
+  if (req.headers["user-agent"]) options.headers["user-agent"] = req.headers["user-agent"];
+  if (req.headers["accept"]) options.headers["accept"] = req.headers["accept"];
+  if (req.headers["cookie"]) options.headers["cookie"] = req.headers["cookie"];
+
+  var proxyReq = transport.request(options, function (proxyRes) {
+    res.statusCode = proxyRes.statusCode;
+    var skipHeaders = { "transfer-encoding": true, "content-encoding": true };
+    for (var k in proxyRes.headers) {
+      if (!skipHeaders[k]) {
+        try { res.setHeader(k, proxyRes.headers[k]); } catch (e) {}
+      }
+    }
+    addCorsHeaders(res);
+    proxyRes.pipe(res);
+  });
+
+  proxyReq.on("error", function (err) {
+    res.statusCode = 502;
+    res.setHeader("Content-Type", "text/plain");
+    res.end("Proxy error: " + err.message);
+  });
+
+  if (req.method !== "GET" && req.method !== "HEAD") {
+    req.pipe(proxyReq);
+  } else {
+    proxyReq.end();
+  }
+});
+
+server.listen(PORT, function () {
+  console.log("simple-cors-proxy running on http://localhost:" + PORT);
+});
