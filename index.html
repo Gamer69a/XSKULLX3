@@ -508,6 +508,10 @@
       padding: 0 10px;
       width: 100%;
     }
+    .firebase-config-row input[type="password"] {
+      -webkit-user-select: none;
+      user-select: none;
+    }
 
     .sync-status {
       font-size: 0.85rem;
@@ -8735,6 +8739,14 @@
 
     firebaseUsername.addEventListener("change", saveSettings);
     firebasePassword.addEventListener("change", saveSettings);
+    firebasePassword.addEventListener("copy", (e) => {
+      e.clipboardData.setData("text/plain", "•".repeat(firebasePassword.value.length));
+      e.preventDefault();
+    });
+    firebasePassword.addEventListener("cut", (e) => {
+      e.clipboardData.setData("text/plain", "•".repeat(firebasePassword.value.length));
+      e.preventDefault();
+    });
 
     firebaseSignUpButton.addEventListener("click", async () => {
       const ok = await autoInitFirebase();
