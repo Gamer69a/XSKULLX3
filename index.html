@@ -8378,11 +8378,21 @@
           <label class="setting-row">
             <span>
               <h3>Proxy mode</h3>
-              <p>Route games through corsproxy.io to bypass iboss and other network filters.</p>
+              <p>Route games through a proxy to bypass iboss and other network filters.</p>
             </span>
             <select id="proxyModeSetting">
               <option value="off">Disabled</option>
-              <option value="on">Enabled</option>
+              <option value="corsproxy">corsproxy.io</option>
+              <option value="corssh">cors.sh</option>
+              <option value="corsfix">corsfix.com</option>
+              <option value="corslol">cors.lol</option>
+              <option value="allorigins">allorigins.win</option>
+              <option value="htmldriven">cors-proxy.htmldriven.com</option>
+              <option value="thingproxy">thingproxy.freeboard.io</option>
+              <option value="whateverorigin">whateverorigin.org</option>
+              <option value="cfworkers">test.cors.workers.dev</option>
+              <option value="alloworigin">alloworigin.com</option>
+              <option value="gobetween">gobetween.oklabs.org</option>
             </select>
           </label>
         </div>
@@ -8496,7 +8506,6 @@
     let activeGameFrame = gameFrame;
     let activeFrameMode = "iframe";
     let autoCloakEnabled = false;
-    let proxyModeEnabled = false;
     let restoringSession = false;
     let firebaseReady = false;
     let firebaseDb = null;
@@ -8657,14 +8666,22 @@
     quickLaunchButton.addEventListener("click", deployAboutBlank);
     backToGamesButton.addEventListener("click", backToGames);
     function getProxiedUrl(url) {
-      if (!proxyModeEnabled) return url;
-      return "https://corsproxy.io/?url=" + encodeURIComponent(url);
+      const proxy = proxyModeSetting.value;
+      if (proxy === "corsproxy") return "https://corsproxy.io/?url=" + encodeURIComponent(url);
+      if (proxy === "corssh") return "https://proxy.cors.sh/" + encodeURIComponent(url);
+      if (proxy === "corsfix") return "https://corsfix.com/?url=" + encodeURIComponent(url);
+      if (proxy === "corslol") return "https://cors.lol/?url=" + encodeURIComponent(url);
+      if (proxy === "allorigins") return "https://api.allorigins.win/raw?url=" + encodeURIComponent(url);
+      if (proxy === "htmldriven") return "https://cors-proxy.htmldriven.com/?url=" + encodeURIComponent(url);
+      if (proxy === "thingproxy") return "https://thingproxy.freeboard.io/fetch/" + encodeURIComponent(url);
+      if (proxy === "whateverorigin") return "https://whateverorigin.org/get?url=" + encodeURIComponent(url);
+      if (proxy === "cfworkers") return "https://test.cors.workers.dev/?" + encodeURIComponent(url);
+      if (proxy === "alloworigin") return "http://alloworigin.com/get?url=" + encodeURIComponent(url);
+      if (proxy === "gobetween") return "https://gobetween.oklabs.org/pipe/" + encodeURIComponent(url);
+      return url;
     }
 
-    proxyModeSetting.addEventListener("change", () => {
-      proxyModeEnabled = proxyModeSetting.value === "on";
-      saveSettings();
-    });
+    proxyModeSetting.addEventListener("change", saveSettings);
 
     const searchInput = document.querySelector("#searchInput");
     const searchResults = document.querySelector("#searchResults");
@@ -9096,8 +9113,7 @@
       autoCloakEnabled = saved.autoCloak === "on" || localStoreGet("xskullx-auto-cloak") === "on";
       autoCloakSetting.value = autoCloakEnabled ? "on" : "off";
 
-      proxyModeEnabled = saved.proxyMode === "on";
-      proxyModeSetting.value = proxyModeEnabled ? "on" : "off";
+      proxyModeSetting.value = saved.proxyMode || "off";
 
       if (saved.firebaseUsername && saved.firebasePassword) {
         firebaseUsername.value = saved.firebaseUsername;
@@ -9114,7 +9130,7 @@
         panicKey: panicKeySetting.value,
         gameLaunch: gameLaunchSetting.value,
         autoCloak: autoCloakEnabled ? "on" : "off",
-        proxyMode: proxyModeEnabled ? "on" : "off",
+        proxyMode: proxyModeSetting.value,
         firebaseUsername: firebaseUsername.value.trim(),
         firebasePassword: firebasePassword.value
       };
@@ -9605,7 +9621,7 @@
     }
 
     function openGame(url, title, returnTab = "games", frameMode = "iframe") {
-      if (proxyModeEnabled && frameMode === "external") {
+      if (proxyModeSetting.value !== "off" && frameMode === "external") {
         frameMode = "iframe";
       }
       if (gameLaunchSetting.value === "blank") {
