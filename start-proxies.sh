@@ -16,13 +16,18 @@ echo "Starting corsfix-selfhosted (port 4000)..."
 node "$DIR/corsfix-selfhosted/server.js" &
 PID_CORSFIX=$!
 
+echo "Starting xskullx-proxy (port 5000)..."
+node "$DIR/xskullx-proxy/server.js" &
+PID_XSKULLX=$!
+
 echo ""
 echo "All proxies started:"
 echo "  corsify ......... http://localhost:3000/?url="
 echo "  simple-cors-proxy  http://localhost:8080/proxy/"
 echo "  corsfix ......... http://localhost:4000/?url="
+echo "  xskullx ......... http://localhost:5000/?url="
 echo ""
 echo "Press Ctrl+C to stop all."
 
-trap "kill $PID_CORSIFY $PID_SIMPLE $PID_CORSFIX 2>/dev/null; exit" INT TERM
+trap "kill $PID_CORSIFY $PID_SIMPLE $PID_CORSFIX $PID_XSKULLX 2>/dev/null; exit" INT TERM
 wait
