@@ -362,6 +362,24 @@
       display: none;
     }
 
+    .is-fullscreen .proxy-header,
+    .is-fullscreen .game-page-header {
+      background: transparent;
+      border: none;
+      min-height: 0;
+      padding: 6px;
+      gap: 6px;
+    }
+
+    .is-fullscreen .proxy-header .brand-mark,
+    .is-fullscreen .proxy-header .game-page-title,
+    .is-fullscreen .game-page-header .brand-mark,
+    .is-fullscreen .game-page-header .game-page-title,
+    .is-fullscreen .game-page-header .game-page-actions,
+    .is-fullscreen .proxy-header .icon-button[aria-label*="Reload"] {
+      display: none;
+    }
+
     .frame-area {
       position: relative;
       min-height: 0;
@@ -564,46 +582,17 @@
       position: fixed;
       inset: 0;
       z-index: 10;
-      min-height: 100vh;
-      background: #f8f9fa;
-      color: #202124;
-      font-family: Arial, sans-serif;
+      background: #fff;
     }
 
     .classroom-cover[hidden] {
       display: none;
     }
 
-    .classroom-topbar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 20px;
-      background: #1a73e8;
-      color: #fff;
-      font-size: 20px;
-      font-weight: 500;
-    }
-
-    .classroom-logo {
-      display: grid;
-      place-items: center;
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      background: #fff;
-      color: #1a73e8;
-      font-weight: 700;
-    }
-
-    .classroom-content {
-      padding: 30px;
-    }
-
-    .classroom-content h2 {
-      margin: 0;
-      color: #202124;
-      font-weight: 500;
+    .classroom-cover iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
     }
 
     .class-list {
@@ -665,13 +654,13 @@
       <nav class="tabs" aria-label="Main tabs">
         <button class="tab-button" type="button" data-tab="home" aria-selected="true">Home</button>
         <button class="tab-button" type="button" data-tab="games" aria-selected="false">Games</button>
-        <button class="tab-button" type="button" data-tab="proxy" aria-selected="false">Proxy</button>
         <button class="tab-button" type="button" data-tab="apps" aria-selected="false">Apps</button>
         <button class="tab-button" type="button" data-tab="strongdogxp" aria-selected="false">StrongDogXP</button>
-        <button class="tab-button" type="button" data-tab="books" aria-selected="false">Books</button>
-        <button class="tab-button" type="button" data-tab="deploy" aria-selected="false">About Blank</button>
+        <button class="tab-button" type="button" data-tab="budsin" aria-selected="false">Budsin Games</button>
+        <button class="tab-button" type="button" data-tab="lunar" aria-selected="false">Lunar</button>
+        <button class="tab-button" type="button" data-tab="proxy" aria-selected="false">Space</button>
         <button class="tab-button" type="button" data-tab="settings" aria-selected="false">Settings</button>
-        <button class="tab-button" type="button" data-tab="progress" aria-selected="false">Progress</button>
+        <button class="tab-button" type="button" data-tab="deploy" aria-selected="false">About Blank</button>
         <button class="tab-button search-icon-btn" type="button" data-tab="search" aria-selected="false" aria-label="Search">⌕</button>
       </nav>
 
@@ -1051,6 +1040,34 @@
             <h3>ChatGPT</h3>
             <p>Open the embeddable AI chat player.</p>
             <button class="secondary-button" type="button" data-game-title="ChatGPT" data-game-url="https://chatgpt.com/" data-return-tab="apps">ChatGPT</button>
+          </article>
+
+          <article class="game-card" style="cursor:pointer" onclick="setActiveTab('books')">
+            <span class="game-icon" style="font-size:28px">B</span>
+            <h3>Books</h3>
+            <p>Read books online.</p>
+            <button class="secondary-button" type="button">Browse</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="books" data-view>
+        <div class="page-heading">
+          <h2>Books</h2>
+          <p>Choose a book series to read.</p>
+        </div>
+        <div class="game-grid">
+          <article class="game-card" style="cursor:pointer" onclick="setActiveTab('books-dw')">
+            <span class="game-icon" style="font-size:28px">B</span>
+            <h3>Diary of a Wimpy Kid</h3>
+            <p>All 18+ books in the series.</p>
+            <button class="secondary-button" type="button">Browse</button>
+          </article>
+          <article class="game-card" style="cursor:pointer" onclick="setActiveTab('books-hp')">
+            <span class="game-icon" style="font-size:28px">H</span>
+            <h3>Harry Potter</h3>
+            <p>Read the Harry Potter series.</p>
+            <button class="secondary-button" type="button">Browse</button>
           </article>
         </div>
       </section>
@@ -8127,34 +8144,124 @@
         </div>
       </section>
 
-      <section class="view" id="books" data-view>
+      <section class="view" id="proxy-selector" data-view>
         <div class="page-heading">
-          <h2>Books</h2>
-          <p>Read books online.</p>
+          <h2>Proxy Selector</h2>
+          <p>Choose a proxy to route traffic through. Select one and launch the Space browser.</p>
         </div>
 
         <div class="game-grid">
-          <article class="game-card" style="cursor:pointer" onclick="setActiveTab('books-dw')">
-            <span class="game-icon" style="font-size:28px">B</span>
-            <h3>Diary of a Wimpy Kid</h3>
-            <p>All 18+ books in the series.</p>
-            <button class="secondary-button" type="button">Browse</button>
+          <article class="game-card">
+            <span class="game-icon">P</span>
+            <h3>proxy.hoppscotch.io</h3>
+            <p>External proxy service.</p>
+            <button class="secondary-button" type="button" onclick="selectProxy('proxyscotch')">Select</button>
           </article>
-          <article class="game-card" style="cursor:pointer" onclick="setActiveTab('books-hp')">
-            <span class="game-icon" style="font-size:28px">H</span>
-            <h3>Harry Potter</h3>
-            <p>Read the Harry Potter series.</p>
-            <button class="secondary-button" type="button">Browse</button>
+          <article class="game-card">
+            <span class="game-icon">P</span>
+            <h3>yacdn.org</h3>
+            <p>External proxy service.</p>
+            <button class="secondary-button" type="button" onclick="selectProxy('yacdn')">Select</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">P</span>
+            <h3>api.codetabs.com</h3>
+            <p>External proxy service.</p>
+            <button class="secondary-button" type="button" onclick="selectProxy('codetabs')">Select</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">P</span>
+            <h3>cors.io</h3>
+            <p>External proxy service.</p>
+            <button class="secondary-button" type="button" onclick="selectProxy('corsio')">Select</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">P</span>
+            <h3>cors-anywhere.herokuapp.com</h3>
+            <p>External proxy service.</p>
+            <button class="secondary-button" type="button" onclick="selectProxy('corsanywhere')">Select</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">S</span>
+            <h3>corsify (self-hosted)</h3>
+            <p>Local proxy on port 3000.</p>
+            <button class="secondary-button" type="button" onclick="selectProxy('corsify')">Select</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">S</span>
+            <h3>simple-cors-proxy (self-hosted)</h3>
+            <p>Local proxy on port 8080.</p>
+            <button class="secondary-button" type="button" onclick="selectProxy('simple-cors-proxy')">Select</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">S</span>
+            <h3>corsfix (self-hosted)</h3>
+            <p>Local proxy on port 4000.</p>
+            <button class="secondary-button" type="button" onclick="selectProxy('corsfix-selfhosted')">Select</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">S</span>
+            <h3>xskullx own proxy</h3>
+            <p>Local proxy on port 5000.</p>
+            <button class="secondary-button" type="button" onclick="selectProxy('xskullx-proxy')">Select</button>
+          </article>
+          <article class="game-card">
+            <span class="game-icon">X</span>
+            <h3>Disabled</h3>
+            <p>No proxy - direct connection.</p>
+            <button class="secondary-button" type="button" onclick="selectProxy('off')">Select</button>
           </article>
         </div>
+      </section>
+
+      <section class="proxy-view" id="budsin" data-view>
+        <header class="proxy-header" style="justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:10px">
+            <button class="icon-button" type="button" onclick="toggleFullscreen()" aria-label="Fullscreen">⛶</button>
+            <button class="icon-button" type="button" onclick="setActiveTab('games')" aria-label="Back">←</button>
+            <span class="brand-mark">X</span>
+            <strong class="game-page-title">Budsin Games</strong>
+          </div>
+          <button class="icon-button" type="button" onclick="location.reload()" aria-label="Reload">↻</button>
+        </header>
+        <iframe
+          class="game-frame"
+          src="https://games.budsin.dev/"
+          allow="fullscreen; autoplay; gamepad; pointer-lock; clipboard-read; clipboard-write"
+          referrerpolicy="no-referrer"
+          allowfullscreen>
+        </iframe>
+      </section>
+
+      <section class="proxy-view" id="lunar" data-view>
+        <header class="proxy-header" style="justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:10px">
+            <button class="icon-button" type="button" onclick="toggleFullscreen()" aria-label="Fullscreen">⛶</button>
+            <button class="icon-button" type="button" onclick="setActiveTab('home')" aria-label="Back">←</button>
+            <span class="brand-mark">X</span>
+            <strong class="game-page-title">Lunar</strong>
+          </div>
+          <button class="icon-button" type="button" onclick="location.reload()" aria-label="Reload">↻</button>
+        </header>
+        <iframe
+          class="game-frame"
+          src="local_games/lunar/index.html"
+          allow="fullscreen; autoplay; gamepad; pointer-lock; clipboard-read; clipboard-write"
+          referrerpolicy="no-referrer"
+          allowfullscreen>
+        </iframe>
       </section>
 
       <section class="view" id="books-dw" data-view>
         <header class="game-page-header">
           <div class="game-page-left">
+            <button class="icon-button" type="button" onclick="toggleFullscreen()" aria-label="Fullscreen">⛶</button>
             <button class="icon-button" type="button" onclick="setActiveTab('books')" aria-label="Back">←</button>
             <span class="brand-mark">X</span>
             <strong class="game-page-title">Diary of a Wimpy Kid</strong>
+          </div>
+          <div class="game-page-actions">
+            <button class="icon-button" type="button" onclick="location.reload()" aria-label="Reload">↻</button>
           </div>
         </header>
         <div class="game-grid" style="padding:16px">
@@ -8290,9 +8397,13 @@
       <section class="view" id="books-hp" data-view>
         <header class="game-page-header">
           <div class="game-page-left">
+            <button class="icon-button" type="button" onclick="toggleFullscreen()" aria-label="Fullscreen">⛶</button>
             <button class="icon-button" type="button" onclick="setActiveTab('books')" aria-label="Back">←</button>
             <span class="brand-mark">X</span>
             <strong class="game-page-title">Harry Potter</strong>
+          </div>
+          <div class="game-page-actions">
+            <button class="icon-button" type="button" onclick="location.reload()" aria-label="Reload">↻</button>
           </div>
         </header>
         <div class="game-grid" style="padding:16px">
@@ -8338,6 +8449,7 @@
       <section class="view game-page" id="gamePage" data-view aria-label="Game page">
         <header class="game-page-header">
           <div class="game-page-left">
+            <button class="icon-button" type="button" onclick="toggleFullscreen()" aria-label="Fullscreen">⛶</button>
             <button class="icon-button" type="button" id="backToGamesButton" aria-label="Back">←</button>
             <span class="brand-mark">X</span>
             <strong class="game-page-title" id="gamePageTitle">Game</strong>
@@ -8471,24 +8583,34 @@
             </select>
           </label>
 
-          <label class="setting-row">
+          <label class="setting-row" style="cursor:pointer" onclick="setActiveTab('proxy-selector')">
             <span>
-              <h3>Proxy mode</h3>
-              <p>Route games through a proxy to bypass iboss and other network filters.</p>
+              <h3>Proxy Selector</h3>
+              <p>Choose a proxy to route traffic through.</p>
             </span>
-            <select id="proxyModeSetting">
-              <option value="off">Disabled</option>
-              <option value="proxyscotch">proxy.hoppscotch.io</option>
-              <option value="yacdn">yacdn.org</option>
-              <option value="codetabs">api.codetabs.com</option>
-              <option value="corsio">cors.io</option>
-              <option value="corsanywhere">cors-anywhere.herokuapp.com</option>
-              <option value="corsify">corsify (self-hosted)</option>
-              <option value="simple-cors-proxy">simple-cors-proxy (self-hosted)</option>
-              <option value="corsfix-selfhosted">corsfix (self-hosted)</option>
-              <option value="xskullx-proxy">xskullx own proxy</option>
-            </select>
+            <span style="color:var(--text-secondary);font-size:1.2rem">→</span>
           </label>
+
+          <label class="setting-row" style="cursor:pointer" onclick="setActiveTab('progress')">
+            <span>
+              <h3>Progress</h3>
+              <p>View your game progress and saved data.</p>
+            </span>
+            <span style="color:var(--text-secondary);font-size:1.2rem">→</span>
+          </label>
+
+          <select id="proxyModeSetting" style="display:none">
+            <option value="off">Disabled</option>
+            <option value="proxyscotch">proxy.hoppscotch.io</option>
+            <option value="yacdn">yacdn.org</option>
+            <option value="codetabs">api.codetabs.com</option>
+            <option value="corsio">cors.io</option>
+            <option value="corsanywhere">cors-anywhere.herokuapp.com</option>
+            <option value="corsify">corsify (self-hosted)</option>
+            <option value="simple-cors-proxy">simple-cors-proxy (self-hosted)</option>
+            <option value="corsfix-selfhosted">corsfix (self-hosted)</option>
+            <option value="xskullx-proxy">xskullx own proxy</option>
+          </select>
         </div>
       </section>
 
@@ -8509,8 +8631,11 @@
       </section>
 
       <section class="proxy-view" id="proxy" data-view>
-        <header class="proxy-header">
-          <button class="icon-button" type="button" id="proxyBackButton" aria-label="Back to home">←</button>
+        <header class="proxy-header" style="justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:10px">
+            <button class="icon-button" type="button" onclick="toggleFullscreen()" aria-label="Fullscreen">⛶</button>
+            <button class="icon-button" type="button" id="proxyBackButton" aria-label="Back to home">←</button>
+          </div>
           <button class="icon-button" type="button" id="proxyReloadButton" aria-label="Reload proxy">↻</button>
         </header>
         <iframe
@@ -8532,26 +8657,12 @@
   </div>
 
   <aside class="classroom-cover" id="classroomCover" hidden aria-label="Classroom cover view">
-    <header class="classroom-topbar">
-      <span class="classroom-logo" aria-hidden="true">C</span>
-      <span>Google Classroom</span>
-    </header>
-
-    <section class="classroom-content">
-      <h2>Classes</h2>
-
-      <div class="class-list">
-        <article class="class-card">
-          <div class="class-title">Math - Period 3</div>
-          <div class="class-status">No upcoming work</div>
-        </article>
-
-        <article class="class-card">
-          <div class="class-title">Science - Period 4</div>
-          <div class="class-status">No upcoming work</div>
-        </article>
-      </div>
-    </section>
+    <iframe
+      src="https://classroom.google.com/"
+      allow="fullscreen; autoplay"
+      referrerpolicy="no-referrer"
+      allowfullscreen>
+    </iframe>
   </aside>
 
   <script>
@@ -9653,6 +9764,37 @@
       } catch (error) {
         return fallback;
       }
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        const el = document.documentElement;
+        const req = el.requestFullscreen || el.webkitRequestFullscreen;
+        if (req) {
+          req.call(el).then(() => document.documentElement.classList.add("is-fullscreen")).catch(() => {});
+        }
+      } else {
+        const exit = document.exitFullscreen || document.webkitExitFullscreen;
+        if (exit) {
+          exit.call(document).then(() => document.documentElement.classList.remove("is-fullscreen")).catch(() => {});
+        }
+      }
+    }
+
+    document.addEventListener("fullscreenchange", () => {
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        document.documentElement.classList.remove("is-fullscreen");
+      }
+    });
+    document.addEventListener("webkitfullscreenchange", () => {
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        document.documentElement.classList.remove("is-fullscreen");
+      }
+    });
+
+    function selectProxy(value) {
+      proxyModeSetting.value = value;
+      saveSettings();
     }
 
     function setActiveTab(tabId, options = {}) {
